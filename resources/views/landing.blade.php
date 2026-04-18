@@ -183,44 +183,7 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer style="background-color: #3D2A3E;" class="px-12 py-8">
-        <div class="grid grid-cols-4 gap-6 text-xs text-gray-300 max-w-5xl mx-auto">
-            <div>
-                <img src="{{ asset('assets/logo.png') }}" alt="Logo" class="h-10 mb-2 object-contain brightness-200">
-                <p class="text-gray-400 leading-relaxed">Belajar Bahasa Isyarat dengan AI Secara Mandiri</p>
-            </div>
-            <div>
-                <p class="font-bold text-white mb-2">Navigasi</p>
-                <ul class="space-y-1 text-gray-400">
-                    <li><a href="#" class="hover:text-pink-300">Beranda</a></li>
-                    <li><a href="{{ route('pembelajaran') }}" class="hover:text-pink-300">Pembelajaran</a></li>
-                    <li><a href="{{ route('latihan') }}" class="hover:text-pink-300">Latihan</a></li>
-                    <li><a href="{{ route('faq') }}" class="hover:text-pink-300">FAQ</a></li>
-                </ul>
-            </div>
-            <div>
-                <p class="font-bold text-white mb-2">Hubungi Kami</p>
-                <ul class="space-y-1 text-gray-400">
-                    <li>📞 +62 812034957</li>
-                    <li>📍 Politeknik Negeri Batam</li>
-                    <li>📧 signlearn@gmail.com</li>
-                </ul>
-            </div>
-            <div>
-                <p class="font-bold text-white mb-2">Ikuti Kami</p>
-                <ul class="space-y-1 text-gray-400">
-                    <li>✉️ Gmail</li>
-                    <li>📷 Instagram</li>
-                    <li>▶️ Youtube</li>
-                </ul>
-            </div>
-        </div>
-        <div class="border-t border-gray-600 mt-6 pt-3 text-center text-gray-500 text-xs">
-            ©2026 SIGNLEARN. All Rights Reserved.
-        </div>
-    </footer>
-
+@include('layout.footer')
 </div>
 </body>
 </html>

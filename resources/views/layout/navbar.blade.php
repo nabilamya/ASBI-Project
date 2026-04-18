@@ -138,7 +138,7 @@
       class="{{ request()->routeIs('beranda') ? 'nav-active' : '' }}">
       Beranda
     </a>
-    <a href="{{ route('pembelajaran') }}"
+    <a href="{{ route('pembelajaran.index') }}"
       class="{{ request()->routeIs('pembelajaran*') ? 'nav-active' : '' }}">
       Pembelajaran
     </a>
@@ -174,7 +174,7 @@
     class="{{ request()->routeIs('beranda') ? 'nav-active' : '' }}">
     Beranda
   </a>
-  <a href="{{ route('pembelajaran') }}"
+  <a href="{{ route('pembelajaran.index') }}"
     class="{{ request()->routeIs('pembelajaran*') ? 'nav-active' : '' }}">
     Pembelajaran
   </a>

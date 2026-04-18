@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\PembelajaranController;
 
 Route::get('/', function () {
     return view('landing');
@@ -43,6 +44,14 @@ Route::get('/pembelajaran/bisindo', function () {
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
+
+Route::get('/profil', function () {
+    return view('profil');
+})->name('profil.index');
+
+
+Route::get('/pembelajaran.index', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
+Route::get('/pembelajaran/{modul}/{huruf}', [PembelajaranController::class, 'showHuruf'])->name('pembelajaran.huruf');
 
 
 Route::prefix('admin')->name('admin.')->group(function () {
