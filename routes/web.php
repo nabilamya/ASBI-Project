@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
     return view('landing');
@@ -43,3 +44,9 @@ Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
+    Route::get('/modul', [AdminController::class, 'modul'])->name('modul');
+    Route::get('/kuis', [AdminController::class, 'kuis'])->name('kuis');
+});
