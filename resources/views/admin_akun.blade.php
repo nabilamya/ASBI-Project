@@ -105,12 +105,13 @@
                 @endif
             </span>
             <span class="flex items-center gap-2">
-                {{-- Tombol Edit --}}
-                <button class="text-blue-500 hover:text-blue-700 transition" onclick="editUser(this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                    </svg>
+                {{-- Tombol Edit (style seperti modul) --}}
+                <button onclick="openEditModal(this)"
+                        data-nama="{{ $user['nama'] }}"
+                        data-email="{{ $user['email'] }}"
+                        data-status="{{ $user['status'] }}"
+                        class="px-3 py-1 rounded-lg text-xs font-bold border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 transition">
+                    Edit
                 </button>
                 {{-- Tombol Hapus --}}
                 <button class="text-gray-500 hover:text-red-500 transition" onclick="confirmDelete(this)">
@@ -123,7 +124,6 @@
         </div>
         @endforeach
 
-        {{-- Pesan kosong saat search tidak ditemukan --}}
         <div id="emptyMsg" class="hidden text-center text-gray-400 text-sm py-6">
             Tidak ada pengguna yang ditemukan.
         </div>
@@ -131,12 +131,47 @@
 
 </div>
 
-{{-- Modal Tambah / Edit Akun --}}
+{{-- Modal Tambah Akun --}}
 <div id="modalTambah" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
         <div class="flex justify-between items-center mb-4">
-            <h3 id="modalTitle" class="text-lg font-extrabold text-gray-800">Tambah Akun Pengguna</h3>
-            <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+            <h3 class="text-lg font-extrabold text-gray-800">Tambah Akun Pengguna</h3>
+            <button onclick="closeModal('modalTambah')" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+        </div>
+        <div class="space-y-3">
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">Nama Lengkap</label>
+                <input type="text" id="tambahNama" class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-300" />
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">Email</label>
+                <input type="email" id="tambahEmail" class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-300" />
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">Password</label>
+                <input type="password" id="tambahPassword" autocomplete="new-password" class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-300" placeholder="Masukkan password" />
+            </div>
+            <div>
+                <label class="block text-xs text-gray-500 mb-1">Status</label>
+                <select id="tambahStatus" class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                    <option value="Aktif">Aktif</option>
+                    <option value="Non Aktif">Non Aktif</option>
+                </select>
+            </div>
+            <button id="btnSimpanTambah" class="w-full py-2.5 rounded-xl text-white text-sm font-bold mt-2 hover:opacity-90 transition"
+                    style="background-color: #4A1A6B;">
+                Simpan
+            </button>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Edit Akun (terpisah) --}}
+<div id="modalEdit" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-extrabold text-gray-800">Edit Akun Pengguna</h3>
+            <button onclick="closeModal('modalEdit')" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
         </div>
         <div class="space-y-3">
             <div>
@@ -158,9 +193,9 @@
                     <option value="Non Aktif">Non Aktif</option>
                 </select>
             </div>
-            <button id="btnSimpan" class="w-full py-2.5 rounded-xl text-white text-sm font-bold mt-2 hover:opacity-90 transition"
+            <button id="btnSimpanEdit" class="w-full py-2.5 rounded-xl text-white text-sm font-bold mt-2 hover:opacity-90 transition"
                     style="background-color: #4A1A6B;">
-                Simpan
+                Simpan Perubahan
             </button>
         </div>
     </div>
@@ -170,102 +205,124 @@
 <script>
     let currentEditRow = null; // menyimpan baris yang sedang diedit
 
-    // Buka modal untuk tambah
+    // Buka modal tambah
     document.getElementById('btnTambahAkun').addEventListener('click', function () {
-        currentEditRow = null;
-        document.getElementById('modalTitle').innerText = 'Tambah Akun Pengguna';
-        document.getElementById('editNama').value = '';
-        document.getElementById('editEmail').value = '';
-        document.getElementById('editPassword').value = '';
-        document.getElementById('editStatus').value = 'Aktif';
+        // Reset form tambah
+        document.getElementById('tambahNama').value = '';
+        document.getElementById('tambahEmail').value = '';
+        document.getElementById('tambahPassword').value = '';
+        document.getElementById('tambahStatus').value = 'Aktif';
         document.getElementById('modalTambah').style.display = 'flex';
     });
 
-    // Tutup modal
-    function closeModal() {
-        document.getElementById('modalTambah').style.display = 'none';
+    // Tutup modal (umum)
+    function closeModal(id) {
+        document.getElementById(id).style.display = 'none';
     }
 
     // Klik luar modal
-    document.getElementById('modalTambah').addEventListener('click', function (e) {
-        if (e.target === this) closeModal();
+    ['modalTambah', 'modalEdit'].forEach(id => {
+        document.getElementById(id).addEventListener('click', function (e) {
+            if (e.target === this) closeModal(id);
+        });
     });
 
-    // Fungsi edit: isi modal dengan data baris
-    function editUser(btn) {
+    // Buka modal edit
+    function openEditModal(btn) {
         currentEditRow = btn.closest('.user-row');
-        const nama = currentEditRow.querySelector('.user-name').innerText;
-        const email = currentEditRow.querySelector('.user-email').innerText;
-        const statusSpan = currentEditRow.querySelector('.user-status span');
-        let status = '';
-        if (statusSpan.classList.contains('bg-green-100')) status = 'Aktif';
-        else status = 'Non Aktif';
+        const nama = btn.dataset.nama;
+        const email = btn.dataset.email;
+        const status = btn.dataset.status;
 
-        document.getElementById('modalTitle').innerText = 'Edit Akun Pengguna';
         document.getElementById('editNama').value = nama;
         document.getElementById('editEmail').value = email;
         document.getElementById('editPassword').value = ''; // kosongkan untuk keamanan
         document.getElementById('editStatus').value = status;
-        document.getElementById('modalTambah').style.display = 'flex';
+        document.getElementById('modalEdit').style.display = 'flex';
     }
 
-    // Simpan (tambah atau edit)
-    document.getElementById('btnSimpan').addEventListener('click', function () {
+    // Simpan data tambah
+    document.getElementById('btnSimpanTambah').addEventListener('click', function () {
+        const nama = document.getElementById('tambahNama').value.trim();
+        const email = document.getElementById('tambahEmail').value.trim();
+        const password = document.getElementById('tambahPassword').value;
+        const status = document.getElementById('tambahStatus').value;
+
+        if (!nama || !email) {
+            alert('Nama dan Email harus diisi!');
+            return;
+        }
+        if (!password) {
+            alert('Password harus diisi untuk akun baru!');
+            return;
+        }
+
+        // Buat baris baru
+        const userList = document.getElementById('userList');
+        const newRow = document.createElement('div');
+        newRow.className = 'user-row grid grid-cols-4 items-center bg-white border border-gray-100 rounded-xl px-4 py-3 shadow-sm text-sm';
+        newRow.innerHTML = `
+            <span class="font-semibold text-gray-800 user-name">${escapeHtml(nama)}</span>
+            <span class="text-gray-500 user-email">${escapeHtml(email)}</span>
+            <span class="user-status">
+                ${status === 'Aktif'
+                    ? '<span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">Aktif</span>'
+                    : '<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-500">Non Aktif</span>'}
+            </span>
+            <span class="flex items-center gap-2">
+                <button onclick="openEditModal(this)"
+                        data-nama="${escapeHtml(nama)}"
+                        data-email="${escapeHtml(email)}"
+                        data-status="${status}"
+                        class="px-3 py-1 rounded-lg text-xs font-bold border-2 border-yellow-400 text-yellow-600 hover:bg-yellow-50 transition">
+                    Edit
+                </button>
+                <button class="text-gray-500 hover:text-red-500 transition" onclick="confirmDelete(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </button>
+            </span>
+        `;
+        const emptyMsg = document.getElementById('emptyMsg');
+        userList.insertBefore(newRow, emptyMsg);
+        closeModal('modalTambah');
+        updateStats();
+        checkEmpty();
+    });
+
+    // Simpan perubahan edit
+    document.getElementById('btnSimpanEdit').addEventListener('click', function () {
+        if (!currentEditRow) return;
+
         const nama = document.getElementById('editNama').value.trim();
         const email = document.getElementById('editEmail').value.trim();
         const status = document.getElementById('editStatus').value;
-        const password = document.getElementById('editPassword').value;
+        // password diabaikan karena tidak disimpan di frontend demo
 
         if (!nama || !email) {
             alert('Nama dan Email harus diisi!');
             return;
         }
 
-        if (currentEditRow === null) {
-            // TAMBAH AKUN BARU
-            const userList = document.getElementById('userList');
-            const newRow = document.createElement('div');
-            newRow.className = 'user-row grid grid-cols-4 items-center bg-white border border-gray-100 rounded-xl px-4 py-3 shadow-sm text-sm';
-            newRow.innerHTML = `
-                <span class="font-semibold text-gray-800 user-name">${escapeHtml(nama)}</span>
-                <span class="text-gray-500 user-email">${escapeHtml(email)}</span>
-                <span class="user-status">
-                    ${status === 'Aktif'
-                        ? '<span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">Aktif</span>'
-                        : '<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-500">Non Aktif</span>'}
-                </span>
-                <span class="flex items-center gap-2">
-                    <button class="text-blue-500 hover:text-blue-700 transition" onclick="editUser(this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
-                        </svg>
-                    </button>
-                    <button class="text-gray-500 hover:text-red-500 transition" onclick="confirmDelete(this)">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                        </svg>
-                    </button>
-                </span>
-            `;
-            // Sisipkan sebelum emptyMsg
-            const emptyMsg = document.getElementById('emptyMsg');
-            userList.insertBefore(newRow, emptyMsg);
-            // Update statistik (opsional, bisa hitung ulang)
-            updateStats();
-        } else {
-            // EDIT AKUN
-            currentEditRow.querySelector('.user-name').innerText = nama;
-            currentEditRow.querySelector('.user-email').innerText = email;
-            const statusSpan = currentEditRow.querySelector('.user-status');
-            statusSpan.innerHTML = status === 'Aktif'
-                ? '<span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">Aktif</span>'
-                : '<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-500">Non Aktif</span>';
+        // Update baris
+        currentEditRow.querySelector('.user-name').innerText = nama;
+        currentEditRow.querySelector('.user-email').innerText = email;
+        const statusSpan = currentEditRow.querySelector('.user-status');
+        statusSpan.innerHTML = status === 'Aktif'
+            ? '<span class="px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-600">Aktif</span>'
+            : '<span class="px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-500">Non Aktif</span>';
+
+        // Update data attribute pada tombol edit di baris tersebut
+        const editBtn = currentEditRow.querySelector('button[onclick*="openEditModal"]');
+        if (editBtn) {
+            editBtn.setAttribute('data-nama', nama);
+            editBtn.setAttribute('data-email', email);
+            editBtn.setAttribute('data-status', status);
         }
 
-        // Reset password field (tidak disimpan ke localStorage/demo)
-        closeModal();
-
-        // Update statistik card
+        closeModal('modalEdit');
         updateStats();
     });
 
@@ -278,7 +335,7 @@
         }
     }
 
-    // Cek kalau list kosong
+    // Cek kosong
     function checkEmpty() {
         const rows = document.querySelectorAll('.user-row:not([style*="display: none"])');
         document.getElementById('emptyMsg').classList.toggle('hidden', rows.length > 0);
@@ -295,7 +352,7 @@
         checkEmpty();
     });
 
-    // Update statistik cards (total, aktif, nonaktif)
+    // Update statistik
     function updateStats() {
         const rows = document.querySelectorAll('.user-row');
         let total = rows.length;
@@ -305,12 +362,9 @@
             if (statusText === 'Aktif') aktif++;
         });
         const nonAktif = total - aktif;
-        document.querySelector('.rounded-2xl .text-3xl').innerText = total;
-        // Update card aktif dan nonaktif (mencari berdasarkan posisi)
-        const cards = document.querySelectorAll('.rounded-2xl p.text-sm.font-bold');
-        // Card total sudah di-update, sekarang cari card aktif dan nonaktif
         const allStats = document.querySelectorAll('.grid.grid-cols-3.gap-4 .rounded-2xl');
         if (allStats.length >= 3) {
+            allStats[0].querySelector('.text-3xl').innerText = total;
             allStats[1].querySelector('.text-3xl').innerText = aktif;
             allStats[2].querySelector('.text-3xl').innerText = nonAktif;
         }
@@ -326,7 +380,7 @@
         });
     }
 
-    // Inisialisasi statistik saat load
+    // Inisialisasi
     updateStats();
     checkEmpty();
 </script>
