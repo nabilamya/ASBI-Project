@@ -44,6 +44,7 @@ Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
