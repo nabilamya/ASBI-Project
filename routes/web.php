@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PembelajaranController;
+use App\Http\Controllers\HistoriController;
+
 
 Route::get('/', function () {
     return view('landing');
@@ -60,3 +62,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/modul', [AdminController::class, 'modul'])->name('modul');
     Route::get('/kuis', [AdminController::class, 'kuis'])->name('kuis');
 });
+
+Route::get('/histori', [HistoriController::class, 'index'])->name('histori');
