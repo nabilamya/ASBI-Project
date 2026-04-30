@@ -5,26 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignLearn</title>
 
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    keyframes: {
+                        heroFloat: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        fadeUp: {
+                            from: { opacity: '0', transform: 'translateY(24px)' },
+                            to: { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    },
+                    animation: {
+                        heroFloat: 'heroFloat 5s ease-in-out infinite',
+                        fadeUp: 'fadeUp 0.7s ease',
+                    },
+                },
+            },
+        };
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-
-        @keyframes heroFloat {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        @keyframes fadeUp {
-            from { opacity:0; transform:translateY(24px); }
-            to { opacity:1; transform:translateY(0); }
-        }
-    </style>
 </head>
 
-<body class="bg-[#FEE6F2] text-[#5B2B63] overflow-x-hidden">
+<body class="font-poppins bg-[#FEE6F2] text-[#5B2B63] overflow-x-hidden">
 <div class="relative">
 
     <!-- NAVBAR -->
@@ -65,7 +76,7 @@
     <!-- HERO -->
     <section class="grid md:grid-cols-[1.15fr_0.85fr] items-center gap-[40px] px-6 md:px-12 py-[48px]">
 
-        <div class="animate-[fadeUp_0.7s_ease]">
+        <div class="animate-fadeUp">
             <h1 class="text-[clamp(2rem,3.8vw,3.4rem)] leading-[1.22] font-extrabold mb-[20px] tracking-[-0.5px]">
                 Belajar <span class="text-[#C82D85]">Bahasa Isyarat</span><br>
                 Dengan AI Secara<br>
@@ -93,7 +104,7 @@
         <div class="relative flex items-center justify-center min-h-[400px]">
             <div class="absolute w-[330px] h-[330px] rounded-full bg-[radial-gradient(circle,#F7DAED_0%,transparent_70%)]"></div>
             <img src="{{ asset('assets/hero-illustration.png') }}"
-                 class="relative max-w-[440px] drop-shadow-[0_24px_40px_rgba(200,45,133,0.2)] animate-[heroFloat_5s_ease-in-out_infinite]">
+                 class="relative max-w-[440px] drop-shadow-[0_24px_40px_rgba(200,45,133,0.2)] animate-heroFloat">
         </div>
     </section>
 
