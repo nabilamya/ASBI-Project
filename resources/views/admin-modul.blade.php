@@ -11,33 +11,32 @@
         <p class="text-gray-400 text-sm mt-1">Kelola modul BISINDO & SIBI beserta huruf A–Z dan referensinya.</p>
     </div>
     <button id="btnTambahHuruf"
-            class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow transition hover:opacity-90"
-            style="background-color: #4A1A6B;">
+            class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow transition hover:opacity-90 bg-[#4A1A6B]">
         + Tambah Huruf
     </button>
 </div>
 
 {{-- Statistik Cards --}}
 <div class="grid grid-cols-3 gap-4 mb-8">
-    <div class="rounded-2xl p-5" style="background-color: #EDD5F7;">
+    <div class="rounded-2xl p-5 bg-[#EDD5F7]">
         <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" style="color:#7B2FBE;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#7B2FBE]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
             </svg>
             <span class="text-3xl font-extrabold text-gray-800" id="stat-total">6</span>
         </div>
-        <p class="text-sm font-bold" style="color:#7B2FBE;">Total Huruf</p>
+        <p class="text-sm font-bold text-[#7B2FBE]">Total Huruf</p>
     </div>
-    <div class="rounded-2xl p-5" style="background-color: #FCE7F3;">
+    <div class="rounded-2xl p-5 bg-[#FCE7F3]">
         <div class="flex items-center gap-2 mb-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" style="color:#C82D85;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#C82D85]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3"/>
             </svg>
             <span class="text-3xl font-extrabold text-gray-800" id="stat-bisindo">3</span>
         </div>
-        <p class="text-sm font-bold" style="color:#C82D85;">Huruf BISINDO</p>
+        <p class="text-sm font-bold text-[#C82D85]">Huruf BISINDO</p>
     </div>
-    <div class="rounded-2xl p-5" style="background-color: #E0E7FF;">
+    <div class="rounded-2xl p-5 bg-[#E0E7FF]">
         <div class="flex items-center gap-2 mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3"/>
@@ -52,7 +51,7 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex items-center gap-3 mb-1">
         <span class="text-base font-bold text-gray-800">Kelola Huruf:</span>
-        <span class="px-4 py-1 rounded-full text-xs font-extrabold text-white" style="background-color:#C82D85;">BISINDO</span>
+        <span class="px-4 py-1 rounded-full text-xs font-extrabold text-white bg-[#C82D85]">BISINDO</span>
     </div>
     <p class="text-gray-400 text-sm mb-5">Klik kartu huruf untuk edit atau hapus</p>
 
@@ -86,18 +85,15 @@
 
             {{-- Thumbnail area --}}
             <div class="thumbnail-wrap relative h-20 flex items-center justify-center bg-gradient-to-br from-pink-50 to-purple-50 overflow-hidden">
-                {{-- Placeholder video thumbnail --}}
                 <div class="thumb-placeholder flex flex-col items-center justify-center w-full h-full">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1" style="background:#C82D85;">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-[#C82D85]">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
                             <path d="M8 5v14l11-7z"/>
                         </svg>
                     </div>
                     <span class="text-xs text-gray-400 font-medium">No Video</span>
                 </div>
-                {{-- Thumbnail gambar jika ada --}}
                 <img class="thumb-img absolute inset-0 w-full h-full object-cover hidden" src="" alt="">
-                {{-- Play overlay jika ada video --}}
                 <div class="thumb-play-overlay absolute inset-0 bg-black/30 flex items-center justify-center hidden">
                     <div class="w-9 h-9 rounded-full bg-white/90 flex items-center justify-center">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="#C82D85"><path d="M8 5v14l11-7z"/></svg>
@@ -108,7 +104,7 @@
             {{-- Label huruf --}}
             <div class="flex items-center justify-between px-3 py-2">
                 <span class="text-xl font-extrabold text-gray-800">{{ $item['huruf'] }}</span>
-                <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:#FCE7F3;color:#C82D85;">BISINDO</span>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#FCE7F3] text-[#C82D85]">BISINDO</span>
             </div>
         </div>
         @endforeach
@@ -116,8 +112,8 @@
         {{-- Tombol Tambah --}}
         <button onclick="openTambahModal('BISINDO')"
                 class="w-32 h-36 rounded-2xl border-2 border-dashed border-purple-300 bg-purple-50 flex flex-col items-center justify-center gap-1 hover:border-pink-400 hover:bg-pink-50 transition">
-            <span class="text-3xl font-light" style="color:#C82D85;">+</span>
-            <span class="text-xs font-bold text-center leading-tight" style="color:#7B2FBE;">Tambah Huruf<br>Baru</span>
+            <span class="text-3xl font-light text-[#C82D85]">+</span>
+            <span class="text-xs font-bold text-center leading-tight text-[#7B2FBE]">Tambah Huruf<br>Baru</span>
         </button>
         <p id="emptyBisindo" class="hidden w-full text-center text-gray-400 text-sm py-4">Belum ada huruf BISINDO.</p>
     </div>
@@ -127,7 +123,7 @@
 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
     <div class="flex items-center gap-3 mb-1">
         <span class="text-base font-bold text-gray-800">Kelola Huruf:</span>
-        <span class="px-4 py-1 rounded-full text-xs font-extrabold text-white" style="background-color:#7B2FBE;">SIBI</span>
+        <span class="px-4 py-1 rounded-full text-xs font-extrabold text-white bg-[#7B2FBE]">SIBI</span>
     </div>
     <p class="text-gray-400 text-sm mb-5">Klik kartu huruf untuk edit atau hapus</p>
 
@@ -161,7 +157,7 @@
 
             <div class="thumbnail-wrap relative h-20 flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50 overflow-hidden">
                 <div class="thumb-placeholder flex flex-col items-center justify-center w-full h-full">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1" style="background:#7B2FBE;">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1 bg-[#7B2FBE]">
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                     </div>
                     <span class="text-xs text-gray-400 font-medium">No Video</span>
@@ -176,7 +172,7 @@
 
             <div class="flex items-center justify-between px-3 py-2">
                 <span class="text-xl font-extrabold text-gray-800">{{ $item['huruf'] }}</span>
-                <span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:#EDE9FE;color:#7B2FBE;">SIBI</span>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-[#EDE9FE] text-[#7B2FBE]">SIBI</span>
             </div>
         </div>
         @endforeach
@@ -191,7 +187,6 @@
 </div>
 
 {{-- ====== MODAL DETAIL / EDIT ====== --}}
-{{-- Muncul saat kartu diklik, tampil detail dulu, ada tombol Edit & Hapus --}}
 <div id="modalDetail" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 overflow-hidden">
 
@@ -199,7 +194,7 @@
         <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
             <div class="flex items-center gap-3">
                 <span class="text-3xl font-extrabold text-gray-800" id="detailHuruf">A</span>
-                <span class="px-3 py-1 rounded-full text-xs font-extrabold text-white" id="detailBadge" style="background:#C82D85;">BISINDO</span>
+                <span class="px-3 py-1 rounded-full text-xs font-extrabold text-white bg-[#C82D85]" id="detailBadge">BISINDO</span>
             </div>
             <div class="flex items-center gap-2">
                 <button onclick="openEditDariDetail()"
@@ -227,7 +222,6 @@
             <div>
                 <p class="text-xs font-bold text-gray-500 mb-2">VIDEO REFERENSI</p>
                 <div id="detailVideoWrap" class="w-full h-44 rounded-xl overflow-hidden bg-gray-100 flex items-center justify-center relative">
-                    {{-- Placeholder jika tidak ada video --}}
                     <div id="detailVideoPlaceholder" class="flex flex-col items-center gap-2">
                         <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2">
@@ -236,7 +230,6 @@
                         </div>
                         <span class="text-sm text-gray-400 font-medium">Belum ada video</span>
                     </div>
-                    {{-- Thumbnail jika ada --}}
                     <img id="detailThumbImg" src="" alt="" class="hidden absolute inset-0 w-full h-full object-cover">
                     <div id="detailThumbOverlay" class="hidden absolute inset-0 bg-black/30 flex items-center justify-center">
                         <div class="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center">
@@ -244,7 +237,6 @@
                         </div>
                     </div>
                 </div>
-                {{-- URL video --}}
                 <p id="detailVideoUrl" class="text-xs text-indigo-500 mt-1.5 truncate hidden"></p>
             </div>
 
@@ -333,8 +325,7 @@
                 Batal
             </button>
             <button type="button" onclick="simpanHuruf()"
-                    class="flex-1 py-2.5 rounded-xl text-white text-sm font-bold hover:opacity-90 transition"
-                    style="background-color: #4A1A6B;">
+                    class="flex-1 py-2.5 rounded-xl text-white text-sm font-bold hover:opacity-90 transition bg-[#4A1A6B]">
                 Simpan
             </button>
         </div>
@@ -353,8 +344,7 @@
                 Batal
             </button>
             <button onclick="konfirmasiHapus()"
-                    class="flex-1 py-2.5 rounded-xl text-white text-sm font-bold hover:opacity-90 transition"
-                    style="background-color:#C82D85;">
+                    class="flex-1 py-2.5 rounded-xl text-white text-sm font-bold hover:opacity-90 transition bg-[#C82D85]">
                 Hapus
             </button>
         </div>
@@ -384,7 +374,9 @@
         document.getElementById('detailHuruf').textContent = huruf;
         const badge = document.getElementById('detailBadge');
         badge.textContent = modul;
-        badge.style.background = modul === 'BISINDO' ? '#C82D85' : '#7B2FBE';
+        badge.className = `px-3 py-1 rounded-full text-xs font-extrabold text-white ${
+            modul === 'BISINDO' ? 'bg-[#C82D85]' : 'bg-[#7B2FBE]'
+        }`;
 
         document.getElementById('detailPenjelasan').textContent = penjelasan || 'Belum ada penjelasan.';
 
@@ -494,12 +486,11 @@
     function buatKartu(modul, huruf, penjelasan, video, thumb) {
         const gridId    = modul === 'BISINDO' ? 'bisindo-grid' : 'sibi-grid';
         const grid      = document.getElementById(gridId);
-        const hoverBrd  = modul === 'BISINDO' ? 'hover:border-pink-300' : 'hover:border-indigo-300';
-        const bgGrad    = modul === 'BISINDO'
-            ? 'from-pink-50 to-purple-50' : 'from-indigo-50 to-purple-50';
-        const accentClr = modul === 'BISINDO' ? '#C82D85' : '#7B2FBE';
-        const badgeBg   = modul === 'BISINDO' ? '#FCE7F3' : '#EDE9FE';
-        const badgeClr  = accentClr;
+        const hoverBrd      = modul === 'BISINDO' ? 'hover:border-pink-300' : 'hover:border-indigo-300';
+        const bgGrad        = modul === 'BISINDO' ? 'from-pink-50 to-purple-50' : 'from-indigo-50 to-purple-50';
+        const accentClr     = modul === 'BISINDO' ? '#C82D85' : '#7B2FBE';
+        const accentBgClass = modul === 'BISINDO' ? 'bg-[#C82D85]' : 'bg-[#7B2FBE]';
+        const badgeClass    = modul === 'BISINDO' ? 'bg-[#FCE7F3] text-[#C82D85]' : 'bg-[#EDE9FE] text-[#7B2FBE]';
 
         const thumbHTML = thumb
             ? `<img class="thumb-img absolute inset-0 w-full h-full object-cover" src="${thumb}" alt="">
@@ -509,7 +500,7 @@
                  </div>
                </div>`
             : `<div class="thumb-placeholder flex flex-col items-center justify-center w-full h-full">
-                 <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1" style="background:${accentClr};">
+                 <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1 ${accentBgClass}">
                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                  </div>
                  <span class="text-xs text-gray-400 font-medium">No Video</span>
@@ -531,8 +522,7 @@
             </div>
             <div class="flex items-center justify-between px-3 py-2">
                 <span class="text-xl font-extrabold text-gray-800">${huruf}</span>
-                <span class="text-xs font-semibold px-2 py-0.5 rounded-full"
-                      style="background:${badgeBg};color:${badgeClr};">${modul}</span>
+                <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${badgeClass}">${modul}</span>
             </div>
         `;
 
@@ -546,9 +536,12 @@
     // ============================================================
     function updateKartu(modul, huruf, penjelasan, video, thumb) {
         if (!kartuAktif) return;
-        const accentClr = modul === 'BISINDO' ? '#C82D85' : '#7B2FBE';
-        const bgGrad    = modul === 'BISINDO' ? 'from-pink-50 to-purple-50' : 'from-indigo-50 to-purple-50';
-        const badgeBg   = modul === 'BISINDO' ? '#FCE7F3' : '#EDE9FE';
+        const oldModul      = kartuAktif.dataset.modul;
+        const hoverBrd      = modul === 'BISINDO' ? 'hover:border-pink-300' : 'hover:border-indigo-300';
+        const bgGrad        = modul === 'BISINDO' ? 'from-pink-50 to-purple-50' : 'from-indigo-50 to-purple-50';
+        const accentClr     = modul === 'BISINDO' ? '#C82D85' : '#7B2FBE';
+        const accentBgClass = modul === 'BISINDO' ? 'bg-[#C82D85]' : 'bg-[#7B2FBE]';
+        const badgeClass    = modul === 'BISINDO' ? 'bg-[#FCE7F3] text-[#C82D85]' : 'bg-[#EDE9FE] text-[#7B2FBE]';
         const safePenjelasan = penjelasan.replace(/'/g, "\\'").replace(/\n/g, '\\n');
 
         kartuAktif.dataset.huruf      = huruf;
@@ -556,6 +549,15 @@
         kartuAktif.dataset.penjelasan = safePenjelasan;
         kartuAktif.dataset.video      = video;
         kartuAktif.dataset.thumbnail  = thumb || '';
+        kartuAktif.className = `huruf-card cursor-pointer group relative w-32 rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden transition hover:-translate-y-1 hover:shadow-lg ${hoverBrd}`;
+
+        if (oldModul !== modul) {
+            const newGrid = document.getElementById(modul === 'BISINDO' ? 'bisindo-grid' : 'sibi-grid');
+            const addBtn = newGrid.querySelector('button[onclick*="openTambahModal"]');
+            newGrid.insertBefore(kartuAktif, addBtn);
+            checkEmpty(oldModul);
+            checkEmpty(modul);
+        }
 
         const thumbWrap = kartuAktif.querySelector('.thumbnail-wrap');
         thumbWrap.className = `thumbnail-wrap relative h-20 flex items-center justify-center bg-gradient-to-br ${bgGrad} overflow-hidden`;
@@ -567,7 +569,7 @@
                  </div>
                </div>`
             : `<div class="thumb-placeholder flex flex-col items-center justify-center w-full h-full">
-                 <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1" style="background:${accentClr};">
+                 <div class="w-8 h-8 rounded-full flex items-center justify-center mb-1 ${accentBgClass}">
                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                  </div>
                  <span class="text-xs text-gray-400 font-medium">No Video</span>
@@ -576,8 +578,7 @@
         kartuAktif.querySelector('.text-xl').textContent = huruf;
         const badge = kartuAktif.querySelector('.text-xs.font-semibold');
         badge.textContent = modul;
-        badge.style.background = badgeBg;
-        badge.style.color = accentClr;
+        badge.className = `text-xs font-semibold px-2 py-0.5 rounded-full ${badgeClass}`;
     }
 
     // ============================================================
@@ -622,8 +623,16 @@
     // ============================================================
     // HELPERS
     // ============================================================
-    function showModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    function showModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
 
     ['modalDetail', 'modalForm', 'modalDelete'].forEach(id => {
         document.getElementById(id).addEventListener('click', function (e) {
@@ -648,7 +657,7 @@
         let visible = 0;
         cards.forEach(card => {
             const show = card.dataset.huruf.toLowerCase().includes(kw);
-            card.style.display = show ? '' : 'none';
+            card.classList.toggle('hidden', !show);
             if (show) visible++;
         });
         document.getElementById(emptyId).classList.toggle('hidden', visible > 0);

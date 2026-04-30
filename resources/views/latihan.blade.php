@@ -8,16 +8,16 @@
   * { font-family: 'Poppins', sans-serif; }
 
   @keyframes fadeUp {
-    from { opacity:0; transform:translateY(24px); }
-    to   { opacity:1; transform:translateY(0); }
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
   @keyframes fadeIn {
-    from { opacity:0; } to { opacity:1; }
+    from { opacity: 0; } to { opacity: 1; }
   }
   @keyframes popIn {
-    0%   { transform: scale(0.85); opacity:0; }
+    0%   { transform: scale(0.85); opacity: 0; }
     70%  { transform: scale(1.04); }
-    100% { transform: scale(1);    opacity:1; }
+    100% { transform: scale(1);    opacity: 1; }
   }
   @keyframes shake {
     0%,100% { transform: translateX(0); }
@@ -27,605 +27,337 @@
     80%     { transform: translateX(5px); }
   }
 
-  /* ── WRAPPER ── */
-  .latihan-wrapper {
-    background: linear-gradient(160deg, #FFE8F4 0%, #FFF0F8 40%, #FDE6F2 100%);
-    min-height: 100vh;
-    padding-bottom: 60px;
-  }
+  .animate-fadeUp   { animation: fadeUp  0.5s ease; }
+  .animate-fadeIn   { animation: fadeIn  0.4s ease; }
+  .animate-popIn    { animation: popIn   0.4s ease; }
+  .animate-popIn-lg { animation: popIn   0.5s ease; }
+  .animate-shake    { animation: shake   0.4s ease; }
 
-  /* ── CONTENT AREA ── */
-  .latihan-content {
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 36px 24px 48px;
-  }
-
-  /* ════════════════════════════
-     SCREEN 1 — PILIH LEVEL
-  ════════════════════════════ */
-  #screen-level { animation: fadeUp 0.5s ease; }
-
-  .level-header-card {
-    background: #fff;
-    border-radius: 22px;
-    padding: 36px 32px 28px;
-    text-align: center;
-    box-shadow: 0 6px 28px rgba(200,45,133,0.10);
-    border: 1.5px solid #F7DAED;
-    margin-bottom: 32px;
-  }
-  .level-header-card h1 {
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: #492F48;
-    margin-bottom: 8px;
-  }
-  .level-header-card p {
-    font-size: 0.97rem;
-    color: #7A4B78;
-    font-weight: 500;
-  }
-
-  .level-label {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #492F48;
-    margin-bottom: 16px;
-  }
-
-  .level-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-
-  .level-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #fff;
-    border: 2px solid #F2B8D8;
-    border-radius: 18px;
-    padding: 16px 22px;
-    cursor: pointer;
-    transition: all 0.22s;
-    box-shadow: 0 3px 14px rgba(200,45,133,0.07);
-  }
-  .level-item:hover {
-    border-color: #C82D85;
-    box-shadow: 0 8px 24px rgba(200,45,133,0.18);
-    transform: translateY(-2px);
-  }
-  .level-item.selected {
-    border-color: #C82D85;
-    background: #FEF0F8;
-    box-shadow: 0 8px 28px rgba(200,45,133,0.22);
-  }
-  .level-item-left {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
-  /* Icon gambar level — buat file: public/assets/icon-level-pemula.png, dll */
-  .level-icon-img {
-    width: 52px;
-    height: 52px;
-    object-fit: contain;
-    border-radius: 12px;
-    flex-shrink: 0;
-    filter: drop-shadow(0 3px 6px rgba(200,45,133,0.18));
-  }
-
-  .level-info h3 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: #492F48;
-    margin-bottom: 2px;
-  }
-  .level-info span {
-    font-size: 0.82rem;
-    color: #9B6898;
-    font-weight: 500;
-  }
-
-  /* Radio dot level */
-  .level-item input[type="radio"] { display: none; }
-  .level-radio-dot {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    border: 2px solid #D8A8CE;
-    background: #fff;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-    flex-shrink: 0;
-  }
-  .level-item.selected .level-radio-dot {
-    border-color: #C82D85;
-    background: #C82D85;
-  }
+  /* Radio dot inner circle via pseudo-element */
   .level-radio-dot::after {
     content: '';
+    display: block;
     width: 9px; height: 9px;
     border-radius: 50%;
     background: #fff;
     opacity: 0;
     transition: opacity 0.2s;
+    margin: auto;
   }
   .level-item.selected .level-radio-dot::after { opacity: 1; }
 
-  .btn-mulai-kuis {
-    display: block;
-    width: 100%;
-    padding: 16px;
-    border-radius: 18px;
-    background: #C82D85;
-    color: #fff;
-    font-size: 1.05rem;
-    font-weight: 800;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 8px 28px rgba(200,45,133,0.38);
-    transition: all 0.22s;
-  }
-  .btn-mulai-kuis:hover {
-    background: #951651;
-    transform: translateY(-2px);
-    box-shadow: 0 14px 36px rgba(200,45,133,0.5);
-  }
-  .btn-mulai-kuis:disabled {
-    background: #D8A8CE;
-    box-shadow: none;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  /* ════════════════════════════
-     SCREEN 2 — SOAL
-  ════════════════════════════ */
-  #screen-soal { display: none; animation: fadeIn 0.4s ease; }
-
-  .soal-topbar {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 18px;
-  }
-  .btn-back {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: #fff;
-    border: 1.5px solid #F2B8D8;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    font-size: 18px;
-    color: #742958;
-    transition: all 0.2s;
-    flex-shrink: 0;
-    border: none;
-    background: transparent;
-  }
-  .btn-back:hover { color: #C82D85; }
-  .soal-topbar-label {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: #492F48;
-  }
-
-  .progress-quiz-bg {
-    width: 100%;
-    height: 10px;
-    background: #F7DAED;
-    border-radius: 50px;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-  .progress-quiz-fill {
-    height: 100%;
-    border-radius: 50px;
-    background: linear-gradient(90deg, #E8409A, #C82D85);
-    transition: width 0.5s ease;
-    box-shadow: 0 2px 8px rgba(200,45,133,0.35);
-  }
-
-  .soal-card {
-    background: #fff;
-    border-radius: 22px;
-    padding: 32px 28px;
-    box-shadow: 0 6px 28px rgba(200,45,133,0.10);
-    border: 1.5px solid #F7DAED;
-    margin-bottom: 24px;
-    text-align: center;
-  }
-  .soal-card .soal-pertanyaan {
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: #492F48;
-    margin-bottom: 22px;
-  }
-  .soal-card .soal-img {
-    width: 120px; height: 120px;
-    object-fit: contain;
-    margin: 0 auto 18px;
-    display: block;
-    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.10));
-    animation: popIn 0.4s ease;
-  }
-  .soal-img-placeholder {
-    width: 120px; height: 120px;
-    margin: 0 auto 18px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 64px;
-    animation: popIn 0.4s ease;
-  }
-
-  /* Feedback */
-  .soal-feedback {
-    border-radius: 14px;
-    padding: 14px 18px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    display: none;
-    margin-top: 16px;
-    animation: popIn 0.3s ease;
-  }
-  .soal-feedback.benar {
-    background: #E8F8EE;
-    border: 1.5px solid #5CB87A;
-    color: #2D6A3F;
-    display: block;
-  }
-  .soal-feedback.salah {
-    background: #FDECEC;
-    border: 1.5px solid #E57373;
-    color: #8B2020;
-    display: block;
-    animation: shake 0.4s ease;
-  }
-  .soal-feedback .fb-title { font-size: 1rem; font-weight: 800; margin-bottom: 3px; }
-  .soal-feedback .fb-sub   { font-weight: 500; font-size: 0.88rem; }
-
-  /* ── PILIHAN — radio button murni, tanpa label ABC ── */
-  .pilihan-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-    margin-bottom: 20px;
-  }
-  .pilihan-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: #fff;
-    border: 2px solid #F2B8D8;
-    border-radius: 16px;
-    padding: 14px 18px;
-    cursor: pointer;
-    transition: all 0.2s;
-    box-shadow: 0 2px 10px rgba(200,45,133,0.06);
-    user-select: none;
-  }
-  .pilihan-item:hover:not(.locked) {
-    border-color: #C82D85;
-    background: #FEF0F8;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(200,45,133,0.16);
-  }
-  .pilihan-item input[type="radio"] { display: none; }
-
-  /* Lingkaran radio */
-  .pilihan-radio-circle {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    border: 2px solid #D8A8CE;
-    background: #fff;
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
   .pilihan-radio-circle::after {
     content: '';
+    display: block;
     width: 8px; height: 8px;
     border-radius: 50%;
     background: #C82D85;
     opacity: 0;
     transition: opacity 0.2s;
-  }
-  .pilihan-item.selected .pilihan-radio-circle {
-    border-color: #C82D85;
+    margin: auto;
   }
   .pilihan-item.selected .pilihan-radio-circle::after { opacity: 1; }
+  .pilihan-item.correct  .pilihan-radio-circle::after { opacity: 1; background: #fff; }
+  .pilihan-item.wrong    .pilihan-radio-circle::after { opacity: 1; background: #fff; }
 
-  .pilihan-text {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #492F48;
-    flex: 1;
-  }
-
-  /* State: benar */
+  /* State classes applied via JS */
   .pilihan-item.correct {
-    border-color: #5CB87A;
-    background: #E8F8EE;
+    border-color: #5CB87A !important;
+    background: #E8F8EE  !important;
   }
   .pilihan-item.correct .pilihan-radio-circle {
-    border-color: #5CB87A;
-    background: #5CB87A;
+    border-color: #5CB87A !important;
+    background: #5CB87A  !important;
   }
-  .pilihan-item.correct .pilihan-radio-circle::after {
-    opacity: 1;
-    background: #fff;
-  }
-  .pilihan-item.correct .pilihan-text { color: #2D6A3F; }
+  .pilihan-item.correct .pilihan-text { color: #2D6A3F !important; }
+  .pilihan-item.correct .check-icon   { display: block !important; }
 
-  /* State: salah */
   .pilihan-item.wrong {
-    border-color: #E57373;
-    background: #FDECEC;
-    opacity: 0.80;
+    border-color: #E57373 !important;
+    background: #FDECEC  !important;
+    opacity: 0.80        !important;
   }
   .pilihan-item.wrong .pilihan-radio-circle {
-    border-color: #E57373;
-    background: #E57373;
+    border-color: #E57373 !important;
+    background: #E57373  !important;
   }
-  .pilihan-item.wrong .pilihan-radio-circle::after {
-    opacity: 1;
-    background: #fff;
-  }
-  .pilihan-item.wrong .pilihan-text { color: #8B2020; }
-  .pilihan-item.locked { cursor: default; }
+  .pilihan-item.wrong .pilihan-text { color: #8B2020 !important; }
 
-  .check-icon {
-    font-size: 16px;
-    display: none;
-    flex-shrink: 0;
-  }
-  .pilihan-item.correct .check-icon { display: block; }
+  .pilihan-item.locked  { cursor: default !important; }
 
-  .btn-next-soal {
-    display: none;
-    width: 100%;
-    padding: 16px;
-    border-radius: 18px;
-    background: #C82D85;
-    color: #fff;
-    font-size: 1.05rem;
-    font-weight: 800;
-    text-align: center;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 8px 28px rgba(200,45,133,0.38);
-    transition: all 0.22s;
+  /* Selected state for level items */
+  .level-item.selected {
+    border-color: #C82D85 !important;
+    background: #FEF0F8  !important;
+    box-shadow: 0 8px 28px rgba(200,45,133,0.22) !important;
   }
-  .btn-next-soal:hover { background: #951651; transform: translateY(-2px); }
+  .level-item.selected .level-radio-dot {
+    border-color: #C82D85 !important;
+    background: #C82D85  !important;
+  }
+
+  /* Selected state for pilihan items */
+  .pilihan-item.selected .pilihan-radio-circle {
+    border-color: #C82D85 !important;
+  }
+
+  /* Feedback display toggle */
+  .soal-feedback        { display: none; }
+  .soal-feedback.benar  { display: block; animation: popIn 0.3s ease; }
+  .soal-feedback.salah  { display: block; animation: shake 0.4s ease; }
+
+  /* btn-next-soal visible toggle */
+  .btn-next-soal         { display: none; }
   .btn-next-soal.visible { display: block; animation: fadeUp 0.3s ease; }
 
-  /* ════════════════════════════
-     SCREEN 3 — HASIL
-  ════════════════════════════ */
-  #screen-hasil { display: none; animation: fadeUp 0.5s ease; }
-
-  .hasil-card {
-    background: #fff;
-    border-radius: 24px;
-    padding: 44px 32px;
-    text-align: center;
-    box-shadow: 0 6px 28px rgba(200,45,133,0.12);
-    border: 1.5px solid #F7DAED;
-  }
-  .hasil-emoji { font-size: 56px; margin-bottom: 16px; animation: popIn 0.5s ease; display: block; }
-  .hasil-card h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #492F48;
-    margin-bottom: 8px;
-  }
-  .hasil-skor {
-    font-size: 3rem;
-    font-weight: 900;
-    color: #C82D85;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .hasil-sub {
-    font-size: 0.9rem;
-    color: #9B6898;
-    margin-bottom: 24px;
-  }
-  .hasil-stats {
-    display: flex;
-    justify-content: center;
-    gap: 36px;
-    margin-bottom: 28px;
-    padding: 20px;
-    background: #FEF0F8;
-    border-radius: 16px;
-  }
-  .hasil-stat { text-align: center; }
-  .hasil-stat .stat-val {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: #492F48;
-  }
-  .hasil-stat .stat-val.green { color: #2D8B50; }
-  .hasil-stat .stat-val.red   { color: #B22020; }
-  .hasil-stat .stat-label {
-    font-size: 0.8rem;
-    color: #9B6898;
-    font-weight: 500;
-    margin-top: 2px;
-  }
-  .hasil-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-  .btn-ulangi {
-    flex: 1; padding: 14px;
-    border-radius: 14px;
-    border: 2px solid #C82D85;
-    color: #C82D85;
-    background: #fff;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-ulangi:hover { background: #FEE6F2; }
-  .btn-ke-beranda {
-    flex: 1; padding: 14px;
-    border-radius: 14px;
-    background: #C82D85;
-    color: #fff;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 6px 20px rgba(200,45,133,0.32);
-    transition: all 0.2s;
-    text-decoration: none;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .btn-ke-beranda:hover { background: #951651; transform: translateY(-2px); }
-
-  @media (max-width: 700px) {
-    .pilihan-grid { grid-template-columns: 1fr; }
-    .hasil-stats  { gap: 18px; }
-  }
+  /* check-icon toggle */
+  .check-icon { display: none; }
 </style>
 @endpush
 
-<div class="latihan-wrapper">
+{{-- ══════════════════════════════════════════════
+     WRAPPER
+══════════════════════════════════════════════ --}}
+<div class="min-h-screen pb-[60px]"
+     style="background: linear-gradient(160deg, #FFE8F4 0%, #FFF0F8 40%, #FDE6F2 100%);">
 
   {{-- NAVBAR --}}
   @include('layout.navbar')
 
-  <div class="latihan-content">
+  {{-- CONTENT --}}
+  <div class="max-w-[720px] mx-auto px-6 pt-9 pb-12">
+
 
     {{-- ══════════════════════════════
          SCREEN 1 — PILIH LEVEL
     ══════════════════════════════ --}}
-    <div id="screen-level">
+    <div id="screen-level" class="animate-fadeUp">
 
-      <div class="level-header-card">
-        <h1>Kuis Praktik Isyarat</h1>
-        <p>Uji kemampuan mengenali huruf BISINDO dan SIBI</p>
+      {{-- Header card --}}
+      <div class="bg-white rounded-[22px] px-8 py-9 text-center
+                  shadow-[0_6px_28px_rgba(200,45,133,0.10)]
+                  border border-[#F7DAED] mb-8">
+        <h1 class="text-[1.75rem] font-extrabold text-[#492F48] mb-2">
+          Kuis Praktik Isyarat
+        </h1>
+        <p class="text-[0.97rem] text-[#7A4B78] font-medium">
+          Uji kemampuan mengenali huruf BISINDO dan SIBI
+        </p>
       </div>
 
-      <p class="level-label">Pilih Level</p>
+      <p class="text-[1.2rem] font-extrabold text-[#492F48] mb-4">Pilih Level</p>
 
-      <div class="level-list">
+      {{-- Level list --}}
+      <div class="flex flex-col gap-[14px] mb-7">
 
-        <label class="level-item" id="lbl-pemula" onclick="selectLevel('pemula', this)">
-          <div class="level-item-left">
-            {{-- Buat file: public/assets/icon-level-pemula.png --}}
-            <img src="{{ asset('assets/icon-level.png') }}"
-                 alt="Pemula" class="level-icon-img">
-            <div class="level-info">
-              <h3>Pemula</h3>
-              <span>Soal Mudah</span>
+        {{-- Pemula --}}
+        <label class="level-item flex items-center justify-between bg-white
+                       border-2 border-[#F2B8D8] rounded-[18px] px-[22px] py-4
+                       cursor-pointer transition-all duration-200
+                       shadow-[0_3px_14px_rgba(200,45,133,0.07)]
+                       hover:border-[#C82D85] hover:shadow-[0_8px_24px_rgba(200,45,133,0.18)]
+                       hover:-translate-y-0.5"
+               id="lbl-pemula" onclick="selectLevel('pemula', this)">
+          <div class="flex items-center gap-4">
+            <img src="{{ asset('assets/icon-level.png') }}" alt="Pemula"
+                 class="w-[52px] h-[52px] object-contain rounded-xl flex-shrink-0
+                        drop-shadow-[0_3px_6px_rgba(200,45,133,0.18)]">
+            <div>
+              <h3 class="text-[1.05rem] font-bold text-[#492F48] mb-0.5">Pemula</h3>
+              <span class="text-[0.82rem] text-[#9B6898] font-medium">Soal Mudah</span>
             </div>
           </div>
-          <input type="radio" name="level" value="pemula">
-          <div class="level-radio-dot"></div>
+          <input type="radio" name="level" value="pemula" class="hidden">
+          <div class="level-radio-dot w-[22px] h-[22px] rounded-full border-2 border-[#D8A8CE]
+                      bg-white flex items-center justify-center transition-all duration-200
+                      flex-shrink-0"></div>
         </label>
 
-        <label class="level-item" id="lbl-menengah" onclick="selectLevel('menengah', this)">
-          <div class="level-item-left">
-            {{-- Buat file: public/assets/icon-level-menengah.png --}}
-            <img src="{{ asset('assets/icon-level.png') }}"
-                 alt="Menengah" class="level-icon-img">
-            <div class="level-info">
-              <h3>Menengah</h3>
-              <span>Soal Sedang</span>
+        {{-- Menengah --}}
+        <label class="level-item flex items-center justify-between bg-white
+                       border-2 border-[#F2B8D8] rounded-[18px] px-[22px] py-4
+                       cursor-pointer transition-all duration-200
+                       shadow-[0_3px_14px_rgba(200,45,133,0.07)]
+                       hover:border-[#C82D85] hover:shadow-[0_8px_24px_rgba(200,45,133,0.18)]
+                       hover:-translate-y-0.5"
+               id="lbl-menengah" onclick="selectLevel('menengah', this)">
+          <div class="flex items-center gap-4">
+            <img src="{{ asset('assets/icon-level.png') }}" alt="Menengah"
+                 class="w-[52px] h-[52px] object-contain rounded-xl flex-shrink-0
+                        drop-shadow-[0_3px_6px_rgba(200,45,133,0.18)]">
+            <div>
+              <h3 class="text-[1.05rem] font-bold text-[#492F48] mb-0.5">Menengah</h3>
+              <span class="text-[0.82rem] text-[#9B6898] font-medium">Soal Sedang</span>
             </div>
           </div>
-          <input type="radio" name="level" value="menengah">
-          <div class="level-radio-dot"></div>
+          <input type="radio" name="level" value="menengah" class="hidden">
+          <div class="level-radio-dot w-[22px] h-[22px] rounded-full border-2 border-[#D8A8CE]
+                      bg-white flex items-center justify-center transition-all duration-200
+                      flex-shrink-0"></div>
         </label>
 
-        <label class="level-item" id="lbl-mahir" onclick="selectLevel('mahir', this)">
-          <div class="level-item-left">
-            {{-- Buat file: public/assets/icon-level-mahir.png --}}
-            <img src="{{ asset('assets/icon-level.png') }}"
-                 alt="Mahir" class="level-icon-img">
-            <div class="level-info">
-              <h3>Mahir</h3>
-              <span>Soal Sulit</span>
+        {{-- Mahir --}}
+        <label class="level-item flex items-center justify-between bg-white
+                       border-2 border-[#F2B8D8] rounded-[18px] px-[22px] py-4
+                       cursor-pointer transition-all duration-200
+                       shadow-[0_3px_14px_rgba(200,45,133,0.07)]
+                       hover:border-[#C82D85] hover:shadow-[0_8px_24px_rgba(200,45,133,0.18)]
+                       hover:-translate-y-0.5"
+               id="lbl-mahir" onclick="selectLevel('mahir', this)">
+          <div class="flex items-center gap-4">
+            <img src="{{ asset('assets/icon-level.png') }}" alt="Mahir"
+                 class="w-[52px] h-[52px] object-contain rounded-xl flex-shrink-0
+                        drop-shadow-[0_3px_6px_rgba(200,45,133,0.18)]">
+            <div>
+              <h3 class="text-[1.05rem] font-bold text-[#492F48] mb-0.5">Mahir</h3>
+              <span class="text-[0.82rem] text-[#9B6898] font-medium">Soal Sulit</span>
             </div>
           </div>
-          <input type="radio" name="level" value="mahir">
-          <div class="level-radio-dot"></div>
+          <input type="radio" name="level" value="mahir" class="hidden">
+          <div class="level-radio-dot w-[22px] h-[22px] rounded-full border-2 border-[#D8A8CE]
+                      bg-white flex items-center justify-center transition-all duration-200
+                      flex-shrink-0"></div>
         </label>
 
-      </div>
+      </div>{{-- /level-list --}}
 
-      <button class="btn-mulai-kuis" id="btn-mulai" disabled onclick="mulaiKuis()">
+      <button class="block w-full py-4 rounded-[18px] bg-[#C82D85] text-white
+                     text-[1.05rem] font-extrabold text-center border-0 cursor-pointer
+                     shadow-[0_8px_28px_rgba(200,45,133,0.38)] transition-all duration-200
+                     hover:bg-[#951651] hover:-translate-y-0.5
+                     hover:shadow-[0_14px_36px_rgba(200,45,133,0.5)]
+                     disabled:bg-[#D8A8CE] disabled:shadow-none
+                     disabled:cursor-not-allowed disabled:translate-y-0"
+              id="btn-mulai" disabled onclick="mulaiKuis()">
         Mulai Kuis
       </button>
-    </div>
+    </div>{{-- /screen-level --}}
+
 
     {{-- ══════════════════════════════
          SCREEN 2 — SOAL
     ══════════════════════════════ --}}
-    <div id="screen-soal">
+    <div id="screen-soal" class="animate-fadeIn" style="display:none;">
 
-      <div class="soal-topbar">
-        <button class="btn-back" onclick="kembaliKeLevel()">&#8592;</button>
-        <span class="soal-topbar-label" id="soal-label">Soal 1 dari 5</span>
+      {{-- Top bar --}}
+      <div class="flex items-center gap-[14px] mb-[18px]">
+        <button class="w-9 h-9 rounded-full flex items-center justify-center
+                       text-[18px] text-[#742958] bg-transparent border-0
+                       cursor-pointer transition-colors duration-200
+                       hover:text-[#C82D85] flex-shrink-0"
+                onclick="kembaliKeLevel()">&#8592;</button>
+        <span class="text-[0.95rem] font-bold text-[#492F48]"
+              id="soal-label">Soal 1 dari 5</span>
       </div>
 
-      <div class="progress-quiz-bg">
-        <div class="progress-quiz-fill" id="quiz-progress" style="width: 0%;"></div>
+      {{-- Progress bar --}}
+      <div class="w-full h-[10px] bg-[#F7DAED] rounded-full overflow-hidden mb-6">
+        <div class="h-full rounded-full transition-[width] duration-500 ease-in-out
+                    shadow-[0_2px_8px_rgba(200,45,133,0.35)]"
+             id="quiz-progress"
+             style="width:0%; background: linear-gradient(90deg,#E8409A,#C82D85);"></div>
       </div>
 
-      <div class="soal-card">
-        <p class="soal-pertanyaan">Huruf apa yang ditunjukkan gerakan ini?</p>
-        <img class="soal-img" id="soal-img" src="" alt="Gesture isyarat"
+      {{-- Soal card --}}
+      <div class="bg-white rounded-[22px] px-7 py-8 text-center
+                  shadow-[0_6px_28px_rgba(200,45,133,0.10)]
+                  border border-[#F7DAED] mb-6">
+
+        <p class="text-[1.05rem] font-semibold text-[#492F48] mb-[22px]">
+          Huruf apa yang ditunjukkan gerakan ini?
+        </p>
+
+        <img class="soal-img w-[120px] h-[120px] object-contain mx-auto mb-[18px]
+                    drop-shadow-[0_6px_12px_rgba(0,0,0,0.10)] block animate-popIn"
+             id="soal-img" src="" alt="Gesture isyarat"
              onerror="this.style.display='none'; document.getElementById('soal-img-ph').style.display='flex';">
-        <div class="soal-img-placeholder" id="soal-img-ph" style="display:none;">🤟</div>
 
-        <div class="soal-feedback" id="soal-feedback">
-          <div class="fb-title" id="fb-title"></div>
-          <div class="fb-sub"   id="fb-sub"></div>
+        <div class="soal-img-placeholder w-[120px] h-[120px] mx-auto mb-[18px]
+                    items-center justify-center text-[64px] animate-popIn"
+             id="soal-img-ph" style="display:none;">🤟</div>
+
+        {{-- Feedback --}}
+        <div class="soal-feedback rounded-[14px] px-[18px] py-[14px]
+                    text-[0.95rem] font-bold mt-4"
+             id="soal-feedback">
+          <div class="text-[1rem] font-extrabold mb-[3px]" id="fb-title"></div>
+          <div class="font-medium text-[0.88rem]" id="fb-sub"></div>
         </div>
       </div>
 
-      <div class="pilihan-grid" id="pilihan-grid"></div>
+      {{-- Pilihan grid --}}
+      <div class="grid grid-cols-2 gap-[14px] mb-5 max-[700px]:grid-cols-1"
+           id="pilihan-grid"></div>
 
-      <button class="btn-next-soal" id="btn-next" onclick="soalBerikutnya()">
+      <button class="btn-next-soal w-full py-4 rounded-[18px] bg-[#C82D85] text-white
+                     text-[1.05rem] font-extrabold text-center border-0 cursor-pointer
+                     shadow-[0_8px_28px_rgba(200,45,133,0.38)] transition-all duration-200
+                     hover:bg-[#951651] hover:-translate-y-0.5"
+              id="btn-next" onclick="soalBerikutnya()">
         Soal Berikutnya
       </button>
-    </div>
+    </div>{{-- /screen-soal --}}
+
 
     {{-- ══════════════════════════════
          SCREEN 3 — HASIL
     ══════════════════════════════ --}}
-    <div id="screen-hasil">
-      <div class="hasil-card">
-        <span class="hasil-emoji" id="hasil-emoji">🎉</span>
-        <h2 id="hasil-judul">Kuis Selesai!</h2>
-        <div class="hasil-skor" id="hasil-skor">0%</div>
-        <p class="hasil-sub" id="hasil-sub">dari 5 soal</p>
-        <div class="hasil-stats">
-          <div class="hasil-stat">
-            <div class="stat-val green" id="hasil-benar">0</div>
-            <div class="stat-label">Benar</div>
+    <div id="screen-hasil" class="animate-fadeUp" style="display:none;">
+      <div class="bg-white rounded-[24px] px-8 py-11 text-center
+                  shadow-[0_6px_28px_rgba(200,45,133,0.12)]
+                  border border-[#F7DAED]">
+
+        <span class="hasil-emoji text-[56px] mb-4 animate-popIn-lg block"
+              id="hasil-emoji">🎉</span>
+
+        <h2 class="text-[1.5rem] font-extrabold text-[#492F48] mb-2"
+            id="hasil-judul">Kuis Selesai!</h2>
+
+        <div class="text-[3rem] font-black text-[#C82D85] leading-none mb-1"
+             id="hasil-skor">0%</div>
+
+        <p class="text-[0.9rem] text-[#9B6898] mb-6"
+           id="hasil-sub">dari 5 soal</p>
+
+        <div class="flex justify-center gap-9 mb-7 py-5 px-4
+                    bg-[#FEF0F8] rounded-2xl
+                    max-[700px]:gap-[18px]">
+          <div class="text-center">
+            <div class="text-[1.5rem] font-extrabold text-[#2D8B50]"
+                 id="hasil-benar">0</div>
+            <div class="text-[0.8rem] text-[#9B6898] font-medium mt-0.5">Benar</div>
           </div>
-          <div class="hasil-stat">
-            <div class="stat-val red" id="hasil-salah">0</div>
-            <div class="stat-label">Salah</div>
+          <div class="text-center">
+            <div class="text-[1.5rem] font-extrabold text-[#B22020]"
+                 id="hasil-salah">0</div>
+            <div class="text-[0.8rem] text-[#9B6898] font-medium mt-0.5">Salah</div>
           </div>
-          <div class="hasil-stat">
-            <div class="stat-val" id="hasil-total">0</div>
-            <div class="stat-label">Total Soal</div>
+          <div class="text-center">
+            <div class="text-[1.5rem] font-extrabold text-[#492F48]"
+                 id="hasil-total">0</div>
+            <div class="text-[0.8rem] text-[#9B6898] font-medium mt-0.5">Total Soal</div>
           </div>
         </div>
-        <div class="hasil-btns">
-          <button class="btn-ulangi" onclick="ulangiKuis()">🔄 Ulangi Kuis</button>
-          <a href="{{ route('beranda') }}" class="btn-ke-beranda">🏠 Ke Beranda</a>
+
+        <div class="flex gap-3 flex-wrap">
+          <button class="flex-1 py-[14px] rounded-[14px] border-2 border-[#C82D85]
+                         text-[#C82D85] bg-white text-[0.95rem] font-bold
+                         cursor-pointer transition-all duration-200
+                         hover:bg-[#FEE6F2]"
+                  onclick="ulangiKuis()">🔄 Ulangi Kuis</button>
+          <a href="{{ route('beranda') }}"
+             class="flex-1 py-[14px] rounded-[14px] bg-[#C82D85] text-white
+                    text-[0.95rem] font-bold border-0
+                    shadow-[0_6px_20px_rgba(200,45,133,0.32)]
+                    transition-all duration-200 no-underline
+                    flex items-center justify-center
+                    hover:bg-[#951651] hover:-translate-y-0.5">
+            🏠 Ke Beranda
+          </a>
         </div>
+
       </div>
-    </div>
+    </div>{{-- /screen-hasil --}}
 
   </div>{{-- /latihan-content --}}
 
@@ -633,10 +365,6 @@
 
 @push('scripts')
 <script>
-// ══════════════════════════════════════════
-//  DATA SOAL — sesuaikan dengan data DB kamu
-//  Gambar soal: public/assets/soal/huruf-a.png, dst.
-// ══════════════════════════════════════════
 const soalBank = {
   pemula: [
     { img: 'huruf-a', jawaban: 'A', pilihan: ['A','B','C','D'] },
@@ -690,7 +418,7 @@ function renderSoal() {
   const total = soalList.length;
   const nomor = currentIndex + 1;
 
-  document.getElementById('soal-label').textContent   = `Soal dari ${nomor} dari ${total}`;
+  document.getElementById('soal-label').textContent    = `Soal dari ${nomor} dari ${total}`;
   document.getElementById('quiz-progress').style.width = ((nomor / total) * 100) + '%';
 
   const imgEl = document.getElementById('soal-img');
@@ -700,26 +428,27 @@ function renderSoal() {
   phEl.style.display  = 'none';
 
   const fb = document.getElementById('soal-feedback');
-  fb.className     = 'soal-feedback';
-  fb.style.display = 'none';
+  fb.className     = 'soal-feedback rounded-[14px] px-[18px] py-[14px] text-[0.95rem] font-bold mt-4';
+  fb.style.display = '';
 
   const btnNext = document.getElementById('btn-next');
   btnNext.classList.remove('visible');
   btnNext.textContent = (currentIndex < total - 1) ? 'Soal Berikutnya' : 'Lihat Hasil';
 
-  // Render pilihan — radio button murni, hanya teks jawaban
   const grid     = document.getElementById('pilihan-grid');
   grid.innerHTML = '';
   const shuffled = [...soal.pilihan].sort(() => Math.random() - 0.5);
 
   shuffled.forEach(opt => {
     const item = document.createElement('label');
-    item.className = 'pilihan-item';
+    item.className = 'pilihan-item flex items-center gap-3 bg-white border-2 border-[#F2B8D8] rounded-2xl px-[18px] py-[14px] cursor-pointer transition-all duration-200 shadow-[0_2px_10px_rgba(200,45,133,0.06)] select-none hover:border-[#C82D85] hover:bg-[#FEF0F8] hover:-translate-y-0.5 hover:shadow-[0_6px_18px_rgba(200,45,133,0.16)]';
     item.innerHTML = `
-      <input type="radio" name="jawaban" value="${opt}">
-      <div class="pilihan-radio-circle"></div>
-      <span class="pilihan-text">${opt}</span>
-      <span class="check-icon">✅</span>
+      <input type="radio" name="jawaban" value="${opt}" class="hidden">
+      <div class="pilihan-radio-circle w-5 h-5 rounded-full border-2 border-[#D8A8CE]
+                  bg-white flex-shrink-0 flex items-center justify-center
+                  transition-all duration-200"></div>
+      <span class="pilihan-text text-[1rem] font-bold text-[#492F48] flex-1">${opt}</span>
+      <span class="check-icon text-[16px] flex-shrink-0">✅</span>
     `;
     item.addEventListener('click', () => {
       if (answered) return;
@@ -752,14 +481,13 @@ function pilihJawaban(pilihan, jawaban) {
     }
   });
 
-  fb.style.display = 'block';
   if (benar) {
     skorBenar++;
-    fb.className = 'soal-feedback benar';
+    fb.className = 'soal-feedback benar rounded-[14px] px-[18px] py-[14px] text-[0.95rem] font-bold mt-4 bg-[#E8F8EE] border border-[#5CB87A] text-[#2D6A3F]';
     document.getElementById('fb-title').textContent = '✅ Jawaban Benar!';
     document.getElementById('fb-sub').textContent   = `Huruf yang ditunjukkan adalah huruf ${jawaban}`;
   } else {
-    fb.className = 'soal-feedback salah';
+    fb.className = 'soal-feedback salah rounded-[14px] px-[18px] py-[14px] text-[0.95rem] font-bold mt-4 bg-[#FDECEC] border border-[#E57373] text-[#8B2020]';
     document.getElementById('fb-title').textContent = '❌ Jawaban Salah!';
     document.getElementById('fb-sub').textContent   = `Jawaban yang benar adalah huruf ${jawaban}`;
   }

@@ -5,404 +5,94 @@
 @include('layout.navbar')
 
 @push('styles')
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
-  * { font-family: 'Poppins', sans-serif; }
-
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(24px); }
-    to   { opacity:1; transform:translateY(0); }
-  }
-  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  @keyframes popIn {
-    0%   { transform:scale(0.90); opacity:0; }
-    70%  { transform:scale(1.03); }
-    100% { transform:scale(1);    opacity:1; }
-  }
-
-  .histori-wrapper {
-    background: linear-gradient(160deg, #FFE8F4 0%, #FFF0F8 40%, #FDE6F2 100%);
-    min-height: 100vh;
-  }
-
-  /* ── HEADER ── */
-  .histori-header { padding: 36px 48px 0; animation: fadeUp 0.6s ease; }
-  .histori-header-card {
-    background: #fff; border-radius: 22px; padding: 28px 32px;
-    display: flex; align-items: center; justify-content: space-between;
-    box-shadow: 0 6px 28px rgba(200,45,133,0.10); border: 1.5px solid #F7DAED;
-    margin-bottom: 32px; transition: box-shadow 0.3s, transform 0.3s;
-  }
-  .histori-header-card:hover { box-shadow: 0 14px 40px rgba(200,45,133,0.16); transform: translateY(-2px); }
-  .histori-header-text h1 { font-size: clamp(1.5rem,3vw,2rem); font-weight: 800; color: #C82D85; margin-bottom: 6px; }
-  .histori-header-text p  { font-size: 0.95rem; color: #7A4B78; font-weight: 500; }
-  /*
-    Icon header kanan — taruh file di:
-    public/assets/icon-histori.png
-  */
-  .histori-header-img {
-    width: 72px; height: 72px; object-fit: contain; flex-shrink: 0;
-    filter: drop-shadow(0 4px 10px rgba(200,45,133,0.20));
-  }
-
-  /* ── SECTION ── */
-  .section-title { font-size: 1.35rem; font-weight: 800; color: #492F48; margin-bottom: 16px; }
-  .aktivitas-section { padding: 0 48px 36px; animation: fadeUp 0.7s ease 0.2s both; }
-
-  /* ── FILTER TABS ── */
-  .filter-tabs { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
-  .filter-tab {
-    padding: 8px 24px; border-radius: 50px; font-size: 0.88rem; font-weight: 700;
-    cursor: pointer; border: none; transition: all 0.2s; background: #F7DAED; color: #C82D85;
-  }
-  .filter-tab:hover { background: #F0B8D8; }
-  .filter-tab.active { background: #C82D85; color: #fff; box-shadow: 0 4px 14px rgba(200,45,133,0.30); }
-
-  /* ── LIST ── */
-  .riwayat-list { display: flex; flex-direction: column; gap: 14px; }
-  .riwayat-item {
-    background: #fff; border-radius: 20px; padding: 18px 22px;
-    display: flex; align-items: center; gap: 16px;
-    box-shadow: 0 4px 18px rgba(200,45,133,0.08); border: 1.5px solid #F7DAED;
-    cursor: pointer; transition: all 0.22s; animation: fadeUp 0.4s ease;
-  }
-  .riwayat-item:hover { transform: translateY(-3px) scale(1.01); box-shadow: 0 12px 32px rgba(200,45,133,0.18); border-color: #E8A0CE; }
-
-  /*
-    Icon item list:
-    - Praktik Huruf → public/assets/icon-praktik.png
-    - Kuis Kata     → public/assets/icon-kuis.png
-  */
-  .riwayat-icon {
-    width: 52px; height: 52px; object-fit: contain; border-radius: 14px;
-    flex-shrink: 0; filter: drop-shadow(0 3px 6px rgba(200,45,133,0.15));
-  }
-
-  .riwayat-info { flex: 1; min-width: 0; }
-  .riwayat-info h3 { font-size: 1rem; font-weight: 700; color: #492F48; margin-bottom: 3px; }
-  .riwayat-info span { font-size: 0.83rem; color: #9B6898; font-weight: 500; }
-
-  .riwayat-badges { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-  .badge-skor  { padding: 6px 18px; border-radius: 50px; background: #C82D85; color: #fff; font-size: 0.82rem; font-weight: 700; box-shadow: 0 4px 12px rgba(200,45,133,0.28); }
-  .badge-benar { padding: 6px 14px; border-radius: 50px; background: #C82D85; color: #fff; font-size: 0.82rem; font-weight: 700; }
-  .badge-salah { padding: 6px 14px; border-radius: 50px; background: #F7DAED; color: #C82D85; font-size: 0.82rem; font-weight: 700; border: 1.5px solid #F0B8D8; }
-
-  /* ── EMPTY STATE ── */
-  .empty-state { text-align: center; padding: 48px 24px; display: none; }
-  /*
-    Icon empty state — taruh file di:
-    public/assets/icon-empty.png
-  */
-  .empty-icon-img { width: 56px; height: 56px; object-fit: contain; margin: 0 auto 12px; display: block; opacity: 0.6; }
-  .empty-state p { font-size: 0.95rem; font-weight: 500; color: #9B6898; }
-
-  /* ══════════════════════════════════
-     MODAL SHARED
-  ══════════════════════════════════ */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(73,47,72,0.52);
-    backdrop-filter: blur(5px); z-index: 999; display: none;
-    align-items: center; justify-content: center; padding: 16px;
-  }
-  .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
-  .modal-box {
-    background: #fff; border-radius: 26px; width: 100%;
-    box-shadow: 0 24px 70px rgba(200,45,133,0.25);
-    overflow: hidden; animation: popIn 0.3s ease;
-    display: flex; flex-direction: column; max-height: 90vh;
-  }
-  .modal-box.modal-praktik { max-width: 560px; }
-  .modal-box.modal-kuis    { max-width: 520px; }
-
-  .modal-header {
-    background: linear-gradient(135deg, #F1A2D0 0%, #C82D85 100%);
-    padding: 22px 24px; display: flex; align-items: center;
-    justify-content: space-between; gap: 12px; flex-shrink: 0;
-  }
-  .modal-header-left { display: flex; align-items: center; gap: 14px; }
-  /*
-    Icon header modal:
-    - Praktik → public/assets/icon-praktik.png
-    - Kuis    → public/assets/icon-kuis.png
-  */
-  .modal-header-icon {
-    width: 48px; height: 48px; object-fit: contain;
-    border-radius: 12px; background: rgba(255,255,255,0.22);
-    padding: 5px; flex-shrink: 0;
-  }
-  .modal-header-text h2 { font-size: 1.05rem; font-weight: 800; color: #fff; margin-bottom: 2px; }
-  .modal-header-text span { font-size: 0.82rem; color: rgba(255,255,255,0.88); font-weight: 500; }
-  .modal-close {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: rgba(255,255,255,0.22); border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; color: #fff; font-weight: 700;
-    transition: background 0.2s; flex-shrink: 0;
-  }
-  .modal-close:hover { background: rgba(255,255,255,0.38); }
-
-  .modal-body { padding: 22px 24px; overflow-y: auto; flex: 1; }
-
-  /* Skor strip */
-  .modal-skor-wrap {
-    text-align: center; padding: 18px 20px; background: #FEF0F8;
-    border-radius: 16px; margin-bottom: 16px; border: 1.5px solid #F7DAED;
-  }
-  .modal-skor-label { font-size: 0.75rem; color: #9B6898; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 3px; }
-  .modal-skor-val   { font-size: 2.6rem; font-weight: 900; color: #C82D85; line-height: 1; margin-bottom: 3px; }
-  .modal-skor-sub   { font-size: 0.82rem; color: #7A4B78; font-weight: 500; }
-
-  /* Status badge */
-  .status-badge { display: inline-block; padding: 5px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-top: 8px; }
-  .status-sangat-baik { background: #E8F8EE; color: #2D8B50; border: 1.5px solid #5CB87A; }
-  .status-baik        { background: #EEF4FF; color: #3B5FBF; border: 1.5px solid #7B9FE8; }
-  .status-cukup       { background: #FFF8E6; color: #8B6020; border: 1.5px solid #E8C87A; }
-  .status-perlu       { background: #FDECEC; color: #B22020; border: 1.5px solid #E57373; }
-
-  /* Huruf besar display */
-  .huruf-display {
-    width: 70px; height: 70px; border-radius: 18px;
-    background: linear-gradient(135deg, #F1A2D0, #C82D85);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2.2rem; font-weight: 900; color: #fff;
-    margin: 0 auto 4px; box-shadow: 0 6px 18px rgba(200,45,133,0.30);
-  }
-
-  /* Rangkuman */
-  .rangkuman-box {
-    background: #FEF8FC; border: 1.5px solid #F7DAED;
-    border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
-  }
-  .rangkuman-title-row {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
-  }
-  /*
-    Icon rangkuman — taruh file di:
-    public/assets/icon-rangkuman.png
-  */
-  .rangkuman-icon { width: 18px; height: 18px; object-fit: contain; }
-  .rang-title { font-size: 0.8rem; font-weight: 700; color: #C82D85; text-transform: uppercase; letter-spacing: 0.5px; }
-  .rangkuman-box p { font-size: 0.88rem; color: #492F48; line-height: 1.65; font-weight: 500; }
-
-  /* Media grid webcam */
-  .media-section-row {
-    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
-  }
-  /*
-    Icon kamera — taruh file di:
-    public/assets/icon-kamera.png
-  */
-  .media-section-icon { width: 18px; height: 18px; object-fit: contain; }
-  .media-section-title { font-size: 0.8rem; font-weight: 700; color: #C82D85; text-transform: uppercase; letter-spacing: 0.5px; }
-  .media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .media-item { border-radius: 12px; overflow: hidden; border: 1.5px solid #F7DAED; position: relative; }
-  .media-item img { width: 100%; height: 120px; object-fit: cover; display: block; background: #FEF0F8; }
-  .media-placeholder {
-    width: 100%; height: 120px;
-    background: linear-gradient(135deg, #FEF0F8, #F7DAED);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-  }
-  /*
-    Icon placeholder media:
-    public/assets/icon-foto.png   → slot gambar
-    public/assets/icon-video.png  → slot video
-  */
-  .media-placeholder-icon { width: 32px; height: 32px; object-fit: contain; opacity: 0.6; }
-  .media-placeholder p { font-size: 0.72rem; font-weight: 600; color: #9B6898; }
-  .media-label {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    background: rgba(73,47,72,0.6); color: #fff;
-    font-size: 0.72rem; font-weight: 600; padding: 4px 8px; text-align: center;
-  }
-
-  /* Detail rows */
-  .modal-detail-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-  .modal-detail-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 10px 14px; background: #FEF8FC; border-radius: 12px; border: 1px solid #F7DAED;
-  }
-  .detail-label {
-    font-size: 0.83rem; color: #7A4B78; font-weight: 600;
-    display: flex; align-items: center; gap: 8px;
-  }
-  /*
-    Icon detail row — taruh file-file di:
-    public/assets/icon-tanggal.png
-    public/assets/icon-durasi.png
-    public/assets/icon-kategori.png
-    public/assets/icon-level.png
-    public/assets/icon-soal.png
-  */
-  .detail-row-icon { width: 16px; height: 16px; object-fit: contain; }
-  .detail-val { font-size: 0.86rem; color: #492F48; font-weight: 700; text-align: right; }
-
-  /* Benar/salah stat (kuis) */
-  .kuis-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-  .kuis-stat-card { border-radius: 12px; border: 1px solid #F7DAED; padding: 12px; text-align: center; background: #FEF8FC; }
-  .kuis-stat-card.benar { background: #E8F8EE; border-color: #B8E8C8; }
-  .kuis-stat-card.salah { background: #FDECEC; border-color: #F0BBBB; }
-  .kuis-stat-val { font-size: 1.5rem; font-weight: 900; line-height: 1; margin-bottom: 4px; }
-  .kuis-stat-card.benar .kuis-stat-val { color: #2D8B50; }
-  .kuis-stat-card.salah .kuis-stat-val { color: #B22020; }
-  .kuis-stat-label-row { display: flex; align-items: center; justify-content: center; gap: 5px; }
-  /*
-    Icon benar/salah:
-    public/assets/icon-benar.png
-    public/assets/icon-salah.png
-  */
-  .kuis-stat-icon { width: 14px; height: 14px; object-fit: contain; }
-  .kuis-stat-label { font-size: 0.78rem; font-weight: 600; color: #7A4B78; }
-
-  /* ── KUIS: daftar soal ── */
-  .soal-list-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-  /*
-    Icon daftar soal:
-    public/assets/icon-daftar-soal.png
-  */
-  .soal-list-title-icon { width: 18px; height: 18px; object-fit: contain; }
-  .soal-list-title { font-size: 0.8rem; font-weight: 700; color: #C82D85; text-transform: uppercase; letter-spacing: 0.5px; }
-
-  .soal-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-  .soal-card-detail { border-radius: 14px; border: 1.5px solid #F7DAED; overflow: hidden; background: #fff; }
-  .soal-card-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; }
-  .soal-card-header.benar { background: #E8F8EE; border-bottom: 1px solid #B8E8C8; }
-  .soal-card-header.salah { background: #FDECEC; border-bottom: 1px solid #F0BBBB; }
-  .soal-nomor {
-    width: 28px; height: 28px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem; font-weight: 800; flex-shrink: 0; color: #fff;
-  }
-  .soal-card-header.benar .soal-nomor { background: #5CB87A; }
-  .soal-card-header.salah .soal-nomor { background: #E57373; }
-  .soal-pertanyaan-txt { font-size: 0.85rem; font-weight: 600; color: #492F48; flex: 1; }
-  /*
-    Icon status soal benar/salah:
-    public/assets/icon-benar.png
-    public/assets/icon-salah.png
-  */
-  .soal-status-img { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
-
-  .soal-card-body { padding: 10px 14px; display: flex; gap: 12px; align-items: flex-start; }
-  /*
-    Gambar soal dari webcam/DB:
-    public/assets/soal/huruf-x.png
-  */
-  .soal-img-thumb {
-    width: 60px; height: 60px; object-fit: contain; border-radius: 10px;
-    background: #FEF0F8; border: 1.5px solid #F7DAED; flex-shrink: 0; padding: 4px;
-  }
-  .soal-img-placeholder-sm {
-    width: 60px; height: 60px; border-radius: 10px;
-    background: #FEF0F8; border: 1.5px solid #F7DAED;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  /* icon di placeholder soal: public/assets/icon-gesture.png */
-  .soal-ph-icon { width: 32px; height: 32px; object-fit: contain; opacity: 0.5; }
-
-  .soal-pilihan-wrap { flex: 1; }
-  .soal-pilihan-row { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; padding: 4px 0; }
-  .soal-pilihan-dot {
-    width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #D8A8CE;
-    flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-  }
-  .soal-pilihan-row.pilihan-benar .soal-pilihan-dot { background: #5CB87A; border-color: #5CB87A; }
-  .soal-pilihan-row.pilihan-benar .soal-pilihan-dot::after { content: '\2713'; font-size: 9px; color: #fff; font-weight: 900; }
-  .soal-pilihan-row.pilihan-salah .soal-pilihan-dot { background: #E57373; border-color: #E57373; }
-  .soal-pilihan-row.pilihan-salah .soal-pilihan-dot::after { content: '\2715'; font-size: 9px; color: #fff; font-weight: 900; }
-  .soal-pilihan-row.pilihan-benar { color: #2D8B50; }
-  .soal-pilihan-row.pilihan-salah { color: #B22020; }
-  .soal-pilihan-row.pilihan-netral { color: #9B6898; }
-
-  /* CTA */
-  .modal-btn {
-    display: block; width: 100%; padding: 13px; border-radius: 14px;
-    background: #C82D85; color: #fff; font-size: 0.93rem; font-weight: 800;
-    text-align: center; border: none; cursor: pointer;
-    box-shadow: 0 6px 20px rgba(200,45,133,0.32); transition: all 0.2s; text-decoration: none;
-  }
-  .modal-btn:hover { background: #951651; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(200,45,133,0.42); color: #fff; }
-
-  @media (max-width: 900px) {
-    .histori-header    { padding: 24px 20px 0; }
-    .aktivitas-section { padding: 0 20px 36px; }
-    .histori-header-card { flex-direction: column; text-align: center; gap: 14px; }
-  }
-  @media (max-width: 500px) {
-    .media-grid { grid-template-columns: 1fr; }
-    .kuis-stat-grid { grid-template-columns: 1fr 1fr; }
-  }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 @endpush
 
-<div class="histori-wrapper">
+{{-- histori-wrapper --}}
+<div class="min-h-screen font-[Poppins] bg-[linear-gradient(160deg,_#FFE8F4_0%,_#FFF0F8_40%,_#FDE6F2_100%)]">
 
-  {{-- HEADER CARD --}}
-  <div class="histori-header">
-    <div class="histori-header-card">
-      <div class="histori-header-text">
-        <h1>Riwayat Belajarku</h1>
-        <p>Lihat semua latihan yang sudah kamu selesaikan</p>
+  {{-- HEADER --}}
+  <div class="px-12 pt-9 pb-0 max-[900px]:px-5 max-[900px]:pt-6">
+    <div class="bg-white rounded-[22px] px-8 py-7 flex items-center justify-between
+                shadow-[0_6px_28px_rgba(200,45,133,0.10)] border-[1.5px] border-[#F7DAED]
+                mb-8 transition-all duration-300 hover:shadow-[0_14px_40px_rgba(200,45,133,0.16)]
+                hover:-translate-y-0.5 max-[900px]:flex-col max-[900px]:text-center max-[900px]:gap-3.5">
+      <div>
+        <h1 class="text-[clamp(1.5rem,3vw,2rem)] font-extrabold text-[#C82D85] mb-1.5">Riwayat Belajarku</h1>
+        <p class="text-[0.95rem] text-[#7A4B78] font-medium">Lihat semua latihan yang sudah kamu selesaikan</p>
       </div>
-      {{-- Icon kanan header → public/assets/icon-histori.png --}}
       <img src="{{ asset('assets/icon-histori.png') }}" alt="Riwayat"
-           class="histori-header-img" onerror="this.style.display='none'">
+           class="w-[72px] h-[72px] object-contain shrink-0 drop-shadow-[0_4px_10px_rgba(200,45,133,0.20)]"
+           onerror="this.style.display='none'">
     </div>
   </div>
 
   {{-- AKTIVITAS --}}
-  <section class="aktivitas-section">
-    <p class="section-title">Aktivitas Terakhir</p>
+  <section class="px-12 pb-9 max-[900px]:px-5">
+    <p class="text-[1.35rem] font-extrabold text-[#492F48] mb-4">Aktivitas Terakhir</p>
 
-    <div class="filter-tabs">
-      <button class="filter-tab active" onclick="filterTab('semua', this)">Semua</button>
-      <button class="filter-tab" onclick="filterTab('praktik', this)">Praktik Huruf</button>
-      <button class="filter-tab" onclick="filterTab('kuis', this)">Kuis Kata</button>
+    {{-- Filter Tabs --}}
+    <div class="flex gap-2.5 mb-6 flex-wrap">
+      <button class="filter-tab px-6 py-2 rounded-full text-[0.88rem] font-bold cursor-pointer border-none
+                     transition-all duration-200 bg-[#C82D85] text-white shadow-[0_4px_14px_rgba(200,45,133,0.30)] active"
+              onclick="filterTab('semua', this)">Semua</button>
+      <button class="filter-tab px-6 py-2 rounded-full text-[0.88rem] font-bold cursor-pointer border-none
+                     transition-all duration-200 bg-[#F7DAED] text-[#C82D85] hover:bg-[#F0B8D8]"
+              onclick="filterTab('praktik', this)">Praktik Huruf</button>
+      <button class="filter-tab px-6 py-2 rounded-full text-[0.88rem] font-bold cursor-pointer border-none
+                     transition-all duration-200 bg-[#F7DAED] text-[#C82D85] hover:bg-[#F0B8D8]"
+              onclick="filterTab('kuis', this)">Kuis Kata</button>
     </div>
 
-    <div class="riwayat-list" id="riwayat-list">
+    {{-- List --}}
+    <div class="flex flex-col gap-3.5" id="riwayat-list">
       @forelse($riwayat as $item)
-        <div class="riwayat-item"
+        <div class="riwayat-item bg-white rounded-[20px] px-[22px] py-[18px] flex items-center gap-4
+                    shadow-[0_4px_18px_rgba(200,45,133,0.08)] border-[1.5px] border-[#F7DAED]
+                    cursor-pointer transition-all duration-[220ms]
+                    hover:-translate-y-[3px] hover:scale-[1.01] hover:shadow-[0_12px_32px_rgba(200,45,133,0.18)]
+                    hover:border-[#E8A0CE]"
              data-tipe="{{ $item['tipe'] }}"
              onclick="bukaModal({{ json_encode($item) }})">
 
-          {{--
-            Icon item list:
-            Praktik → public/assets/icon-praktik.png
-            Kuis    → public/assets/icon-kuis.png
-          --}}
           <img src="{{ asset('assets/icon-' . $item['tipe'] . '.png') }}"
-               alt="{{ $item['tipe'] }}" class="riwayat-icon"
+               alt="{{ $item['tipe'] }}"
+               class="w-[52px] h-[52px] object-contain rounded-[14px] shrink-0 drop-shadow-[0_3px_6px_rgba(200,45,133,0.15)]"
                onerror="this.style.display='none'">
 
-          <div class="riwayat-info">
-            <h3>{{ $item['judul'] }}</h3>
-            <span>{{ $item['subjudul'] }}</span>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[1rem] font-bold text-[#492F48] mb-[3px]">{{ $item['judul'] }}</h3>
+            <span class="text-[0.83rem] text-[#9B6898] font-medium">{{ $item['subjudul'] }}</span>
           </div>
 
-          <div class="riwayat-badges">
+          <div class="flex items-center gap-1.5 shrink-0">
             @if($item['tipe'] === 'praktik')
-              <span class="badge-skor">{{ $item['skor'] }}%</span>
+              <span class="px-[18px] py-1.5 rounded-full bg-[#C82D85] text-white text-[0.82rem] font-bold
+                           shadow-[0_4px_12px_rgba(200,45,133,0.28)]">{{ $item['skor'] }}%</span>
             @else
-              <span class="badge-benar">Benar: {{ $item['benar'] }}</span>
-              <span class="badge-salah">Salah: {{ $item['salah'] }}</span>
+              <span class="px-3.5 py-1.5 rounded-full bg-[#C82D85] text-white text-[0.82rem] font-bold">Benar: {{ $item['benar'] }}</span>
+              <span class="px-3.5 py-1.5 rounded-full bg-[#F7DAED] text-[#C82D85] text-[0.82rem] font-bold
+                           border-[1.5px] border-[#F0B8D8]">Salah: {{ $item['salah'] }}</span>
             @endif
           </div>
         </div>
       @empty
-        <div class="empty-state" style="display:block;">
-          {{-- Icon empty → public/assets/icon-empty.png --}}
-          <img src="{{ asset('assets/icon-empty.png') }}" alt="Kosong" class="empty-icon-img"
+        <div class="text-center py-12 px-6 block">
+          <img src="{{ asset('assets/icon-empty.png') }}" alt="Kosong"
+               class="w-14 h-14 object-contain mx-auto mb-3 block opacity-60"
                onerror="this.style.display='none'">
-          <p>Belum ada riwayat belajar.<br>Yuk mulai belajar sekarang!</p>
+          <p class="text-[0.95rem] font-medium text-[#9B6898]">Belum ada riwayat belajar.<br>Yuk mulai belajar sekarang!</p>
         </div>
       @endforelse
     </div>
 
-    <div class="empty-state" id="empty-filter">
-      {{-- Icon empty → public/assets/icon-empty.png --}}
-      <img src="{{ asset('assets/icon-empty.png') }}" alt="Kosong" class="empty-icon-img"
+    <div class="text-center py-12 px-6 hidden" id="empty-filter">
+      <img src="{{ asset('assets/icon-empty.png') }}" alt="Kosong"
+           class="w-14 h-14 object-contain mx-auto mb-3 block opacity-60"
            onerror="this.style.display='none'">
-      <p>Tidak ada riwayat untuk kategori ini.</p>
+      <p class="text-[0.95rem] font-medium text-[#9B6898]">Tidak ada riwayat untuk kategori ini.</p>
     </div>
   </section>
 
@@ -412,92 +102,103 @@
 {{-- ══════════════════════════════
      MODAL PRAKTIK HURUF
 ══════════════════════════════ --}}
-<div class="modal-overlay" id="modal-praktik" onclick="tutupOverlay('modal-praktik', event)">
-  <div class="modal-box modal-praktik">
+<div class="modal-overlay fixed inset-0 bg-[rgba(73,47,72,0.52)] backdrop-blur-[5px] z-[999]
+            hidden items-center justify-center p-4"
+     id="modal-praktik" onclick="tutupOverlay('modal-praktik', event)">
+  <div class="bg-white rounded-[26px] w-full max-w-[560px] shadow-[0_24px_70px_rgba(200,45,133,0.25)]
+              overflow-hidden flex flex-col max-h-[90vh]">
 
-    <div class="modal-header">
-      <div class="modal-header-left">
-        {{-- Icon header modal → public/assets/icon-praktik.png --}}
+    <div class="bg-[linear-gradient(135deg,_#F1A2D0_0%,_#C82D85_100%)] px-6 py-[22px] flex items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-3.5">
         <img src="{{ asset('assets/icon-praktik.png') }}" alt="Praktik"
-             class="modal-header-icon" id="p-icon">
-        <div class="modal-header-text">
-          <h2 id="p-judul">Praktik Huruf</h2>
-          <span id="p-subjudul">—</span>
+             class="w-12 h-12 object-contain rounded-xl bg-[rgba(255,255,255,0.22)] p-[5px] shrink-0"
+             id="p-icon">
+        <div>
+          <h2 class="text-[1.05rem] font-extrabold text-white mb-0.5" id="p-judul">Praktik Huruf</h2>
+          <span class="text-[0.82rem] text-[rgba(255,255,255,0.88)] font-medium" id="p-subjudul">—</span>
         </div>
       </div>
-      <button class="modal-close" onclick="tutupModal('modal-praktik')">x</button>
+      <button class="w-8 h-8 rounded-full bg-[rgba(255,255,255,0.22)] border-none cursor-pointer
+                     flex items-center justify-center text-[15px] text-white font-bold
+                     transition-colors duration-200 hover:bg-[rgba(255,255,255,0.38)] shrink-0"
+              onclick="tutupModal('modal-praktik')">x</button>
     </div>
 
-    <div class="modal-body">
+    <div class="px-6 py-[22px] overflow-y-auto flex-1">
 
       {{-- Skor + huruf + status --}}
-      <div class="modal-skor-wrap">
-        <div class="huruf-display" id="p-huruf-display">A</div>
-        <p class="modal-skor-label" style="margin-top:10px;">Skor Praktik</p>
-        <div class="modal-skor-val" id="p-skor">—</div>
-        <div id="p-status-badge" class="status-badge">—</div>
+      <div class="text-center px-5 py-[18px] bg-[#FEF0F8] rounded-2xl mb-4
+                  border-[1.5px] border-[#F7DAED]">
+        <div class="w-[70px] h-[70px] rounded-[18px] flex items-center justify-center
+                    text-[2.2rem] font-black text-white mx-auto mb-1
+                    shadow-[0_6px_18px_rgba(200,45,133,0.30)] bg-[linear-gradient(135deg,_#F1A2D0,_#C82D85)]"
+             id="p-huruf-display">A</div>
+        <p class="text-[0.75rem] text-[#9B6898] font-bold uppercase tracking-[0.6px] mb-[3px] mt-2.5">Skor Praktik</p>
+        <div class="text-[2.6rem] font-black text-[#C82D85] leading-none mb-[3px]" id="p-skor">—</div>
+        <div class="status-badge inline-block px-[18px] py-[5px] rounded-full text-[0.85rem] font-bold mt-2"
+             id="p-status-badge">—</div>
       </div>
 
       {{-- Rangkuman --}}
-      <div class="rangkuman-box">
-        <div class="rangkuman-title-row">
-          {{-- Icon rangkuman → public/assets/icon-rangkuman.png --}}
-          <img src="{{ asset('assets/icon-rangkuman.png') }}" alt="" class="rangkuman-icon"
+      <div class="bg-[#FEF8FC] border-[1.5px] border-[#F7DAED] rounded-2xl px-4 py-3.5 mb-4">
+        <div class="flex items-center gap-2 mb-1.5">
+          <img src="{{ asset('assets/icon-rangkuman.png') }}" alt=""
+               class="w-[18px] h-[18px] object-contain"
                onerror="this.style.display='none'">
-          <p class="rang-title">Rangkuman Hasil</p>
+          <p class="text-[0.8rem] font-bold text-[#C82D85] uppercase tracking-[0.5px]">Rangkuman Hasil</p>
         </div>
-        <p id="p-rangkuman">—</p>
+        <p class="text-[0.88rem] text-[#492F48] leading-[1.65] font-medium" id="p-rangkuman">—</p>
       </div>
 
       {{-- Detail info --}}
-      <div class="modal-detail-list">
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            {{-- public/assets/icon-tanggal.png --}}
-            <img src="{{ asset('assets/icon-tanggal.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+      <div class="flex flex-col gap-2 mb-4">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-tanggal.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Tanggal
           </span>
-          <span class="detail-val" id="p-tanggal">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="p-tanggal">—</span>
         </div>
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            {{-- public/assets/icon-durasi.png --}}
-            <img src="{{ asset('assets/icon-durasi.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-durasi.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Durasi
           </span>
-          <span class="detail-val" id="p-durasi">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="p-durasi">—</span>
         </div>
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            {{-- public/assets/icon-kategori.png --}}
-            <img src="{{ asset('assets/icon-kategori.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-kategori.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Kategori
           </span>
-          <span class="detail-val" id="p-kategori">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="p-kategori">—</span>
         </div>
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            {{-- public/assets/icon-level.png --}}
-            <img src="{{ asset('assets/icon-level.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-level.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Level
           </span>
-          <span class="detail-val" id="p-level">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="p-level">—</span>
         </div>
       </div>
 
       {{-- Media webcam --}}
       <div id="p-media-section">
-        <div class="media-section-row">
-          {{-- public/assets/icon-kamera.png --}}
-          <img src="{{ asset('assets/icon-kamera.png') }}" alt="" class="media-section-icon"
+        <div class="flex items-center gap-2 mb-2.5">
+          <img src="{{ asset('assets/icon-kamera.png') }}" alt=""
+               class="w-[18px] h-[18px] object-contain"
                onerror="this.style.display='none'">
-          <p class="media-section-title">Foto / Video Sesi Praktik</p>
+          <p class="text-[0.8rem] font-bold text-[#C82D85] uppercase tracking-[0.5px]">Foto / Video Sesi Praktik</p>
         </div>
-        {{-- Gambar webcam → public/assets/praktik/namafile.jpg --}}
-        <div class="media-grid" id="p-media-grid"></div>
+        <div class="grid grid-cols-2 gap-2.5 mb-4 max-[500px]:grid-cols-1" id="p-media-grid"></div>
       </div>
 
-      <a href="{{ route('latihan') }}" class="modal-btn">Ulangi Praktik</a>
+      <a href="{{ route('latihan') }}"
+         class="block w-full py-3.5 rounded-2xl bg-[#C82D85] text-white text-[0.93rem] font-extrabold
+                text-center border-none cursor-pointer shadow-[0_6px_20px_rgba(200,45,133,0.32)]
+                transition-all duration-200 no-underline
+                hover:bg-[#951651] hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(200,45,133,0.42)]
+                hover:text-white">Ulangi Praktik</a>
     </div>
   </div>
 </div>
@@ -505,99 +206,107 @@
 {{-- ══════════════════════════════
      MODAL KUIS KATA
 ══════════════════════════════ --}}
-<div class="modal-overlay" id="modal-kuis" onclick="tutupOverlay('modal-kuis', event)">
-  <div class="modal-box modal-kuis">
+<div class="modal-overlay fixed inset-0 bg-[rgba(73,47,72,0.52)] backdrop-blur-[5px] z-[999]
+            hidden items-center justify-center p-4"
+     id="modal-kuis" onclick="tutupOverlay('modal-kuis', event)">
+  <div class="bg-white rounded-[26px] w-full max-w-[520px] shadow-[0_24px_70px_rgba(200,45,133,0.25)]
+              overflow-hidden flex flex-col max-h-[90vh]">
 
-    <div class="modal-header">
-      <div class="modal-header-left">
-        {{-- Icon header modal → public/assets/icon-kuis.png --}}
-        <img src="{{ asset('assets/icon-kuis.png') }}" alt="Kuis" class="modal-header-icon">
-        <div class="modal-header-text">
-          <h2 id="k-judul">Kuis Kata</h2>
-          <span id="k-subjudul">—</span>
+    <div class="bg-[linear-gradient(135deg,_#F1A2D0_0%,_#C82D85_100%)] px-6 py-[22px] flex items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-3.5">
+        <img src="{{ asset('assets/icon-kuis.png') }}" alt="Kuis"
+             class="w-12 h-12 object-contain rounded-xl bg-[rgba(255,255,255,0.22)] p-[5px] shrink-0">
+        <div>
+          <h2 class="text-[1.05rem] font-extrabold text-white mb-0.5" id="k-judul">Kuis Kata</h2>
+          <span class="text-[0.82rem] text-[rgba(255,255,255,0.88)] font-medium" id="k-subjudul">—</span>
         </div>
       </div>
-      <button class="modal-close" onclick="tutupModal('modal-kuis')">x</button>
+      <button class="w-8 h-8 rounded-full bg-[rgba(255,255,255,0.22)] border-none cursor-pointer
+                     flex items-center justify-center text-[15px] text-white font-bold
+                     transition-colors duration-200 hover:bg-[rgba(255,255,255,0.38)] shrink-0"
+              onclick="tutupModal('modal-kuis')">x</button>
     </div>
 
-    <div class="modal-body">
+    <div class="px-6 py-[22px] overflow-y-auto flex-1">
 
       {{-- Skor besar --}}
-      <div class="modal-skor-wrap">
-        <p class="modal-skor-label">Skor Kuis</p>
-        <div class="modal-skor-val" id="k-skor">—</div>
-        <p class="modal-skor-sub" id="k-skor-sub">—</p>
+      <div class="text-center px-5 py-[18px] bg-[#FEF0F8] rounded-2xl mb-4 border-[1.5px] border-[#F7DAED]">
+        <p class="text-[0.75rem] text-[#9B6898] font-bold uppercase tracking-[0.6px] mb-[3px]">Skor Kuis</p>
+        <div class="text-[2.6rem] font-black text-[#C82D85] leading-none mb-[3px]" id="k-skor">—</div>
+        <p class="text-[0.82rem] text-[#7A4B78] font-medium" id="k-skor-sub">—</p>
       </div>
 
       {{-- Stat benar / salah --}}
-      <div class="kuis-stat-grid">
-        <div class="kuis-stat-card benar">
-          <div class="kuis-stat-val" id="k-benar">—</div>
-          <div class="kuis-stat-label-row">
-            {{-- public/assets/icon-benar.png --}}
-            <img src="{{ asset('assets/icon-benar.png') }}" alt="" class="kuis-stat-icon" onerror="this.style.display='none'">
-            <span class="kuis-stat-label">Jawaban Benar</span>
+      <div class="grid grid-cols-2 gap-2.5 mb-4">
+        <div class="rounded-xl border border-[#B8E8C8] p-3 text-center bg-[#E8F8EE]">
+          <div class="text-[1.5rem] font-black leading-none mb-1 text-[#2D8B50]" id="k-benar">—</div>
+          <div class="flex items-center justify-center gap-[5px]">
+            <img src="{{ asset('assets/icon-benar.png') }}" alt="" class="w-3.5 h-3.5 object-contain" onerror="this.style.display='none'">
+            <span class="text-[0.78rem] font-semibold text-[#7A4B78]">Jawaban Benar</span>
           </div>
         </div>
-        <div class="kuis-stat-card salah">
-          <div class="kuis-stat-val" id="k-salah">—</div>
-          <div class="kuis-stat-label-row">
-            {{-- public/assets/icon-salah.png --}}
-            <img src="{{ asset('assets/icon-salah.png') }}" alt="" class="kuis-stat-icon" onerror="this.style.display='none'">
-            <span class="kuis-stat-label">Jawaban Salah</span>
+        <div class="rounded-xl border border-[#F0BBBB] p-3 text-center bg-[#FDECEC]">
+          <div class="text-[1.5rem] font-black leading-none mb-1 text-[#B22020]" id="k-salah">—</div>
+          <div class="flex items-center justify-center gap-[5px]">
+            <img src="{{ asset('assets/icon-salah.png') }}" alt="" class="w-3.5 h-3.5 object-contain" onerror="this.style.display='none'">
+            <span class="text-[0.78rem] font-semibold text-[#7A4B78]">Jawaban Salah</span>
           </div>
         </div>
       </div>
 
       {{-- Detail info --}}
-      <div class="modal-detail-list" style="margin-bottom:16px;">
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            <img src="{{ asset('assets/icon-tanggal.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+      <div class="flex flex-col gap-2 mb-4">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-tanggal.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Tanggal
           </span>
-          <span class="detail-val" id="k-tanggal">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="k-tanggal">—</span>
         </div>
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            <img src="{{ asset('assets/icon-durasi.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-durasi.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Durasi
           </span>
-          <span class="detail-val" id="k-durasi">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="k-durasi">—</span>
         </div>
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            <img src="{{ asset('assets/icon-kategori.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-kategori.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Kategori
           </span>
-          <span class="detail-val" id="k-kategori">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="k-kategori">—</span>
         </div>
-        <div class="modal-detail-row">
-          <span class="detail-label">
-            <img src="{{ asset('assets/icon-level.png') }}" alt="" class="detail-row-icon" onerror="this.style.display='none'">
+        <div class="flex items-center justify-between px-3.5 py-2.5 bg-[#FEF8FC] rounded-xl border border-[#F7DAED]">
+          <span class="text-[0.83rem] text-[#7A4B78] font-semibold flex items-center gap-2">
+            <img src="{{ asset('assets/icon-level.png') }}" alt="" class="w-4 h-4 object-contain" onerror="this.style.display='none'">
             Level
           </span>
-          <span class="detail-val" id="k-level">—</span>
+          <span class="text-[0.86rem] text-[#492F48] font-bold text-right" id="k-level">—</span>
         </div>
       </div>
 
       {{-- Daftar soal --}}
-      <div class="soal-list-title-row">
-        {{-- public/assets/icon-daftar-soal.png --}}
-        <img src="{{ asset('assets/icon-daftar-soal.png') }}" alt="" class="soal-list-title-icon"
+      <div class="flex items-center gap-2 mb-2.5">
+        <img src="{{ asset('assets/icon-daftar-soal.png') }}" alt=""
+             class="w-[18px] h-[18px] object-contain"
              onerror="this.style.display='none'">
-        <p class="soal-list-title">Kumpulan Soal yang Dikerjakan</p>
+        <p class="text-[0.8rem] font-bold text-[#C82D85] uppercase tracking-[0.5px]">Kumpulan Soal yang Dikerjakan</p>
       </div>
-      <div class="soal-list" id="k-soal-list"></div>
+      <div class="flex flex-col gap-2.5 mb-4" id="k-soal-list"></div>
 
-      <a href="{{ route('latihan') }}" class="modal-btn">Ulangi Kuis</a>
+      <a href="{{ route('latihan') }}"
+         class="block w-full py-3.5 rounded-2xl bg-[#C82D85] text-white text-[0.93rem] font-extrabold
+                text-center border-none cursor-pointer shadow-[0_6px_20px_rgba(200,45,133,0.32)]
+                transition-all duration-200 no-underline
+                hover:bg-[#951651] hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(200,45,133,0.42)]
+                hover:text-white">Ulangi Kuis</a>
     </div>
   </div>
 </div>
 
 @push('scripts')
 <script>
-// asset base path untuk JS
 const assetBase = '{{ asset("") }}';
 
 function assetUrl(path) {
@@ -606,15 +315,22 @@ function assetUrl(path) {
 
 // ── FILTER ──────────────────────────────────────────
 function filterTab(tipe, el) {
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
+  document.querySelectorAll('.filter-tab').forEach(t => {
+    t.classList.remove('active', 'bg-[#C82D85]', 'text-white', 'shadow-[0_4px_14px_rgba(200,45,133,0.30)]');
+    t.classList.add('bg-[#F7DAED]', 'text-[#C82D85]');
+  });
+  el.classList.add('active', 'bg-[#C82D85]', 'text-white', 'shadow-[0_4px_14px_rgba(200,45,133,0.30)]');
+  el.classList.remove('bg-[#F7DAED]', 'text-[#C82D85]');
+
   let visible = 0;
   document.querySelectorAll('.riwayat-item').forEach(item => {
     const show = tipe === 'semua' || item.dataset.tipe === tipe;
     item.style.display = show ? 'flex' : 'none';
     if (show) visible++;
   });
-  document.getElementById('empty-filter').style.display = visible === 0 ? 'block' : 'none';
+  const emptyFilter = document.getElementById('empty-filter');
+  emptyFilter.classList.toggle('hidden', visible !== 0);
+  emptyFilter.classList.toggle('block',  visible === 0);
 }
 
 // ── DISPATCH ────────────────────────────────────────
@@ -638,46 +354,46 @@ function bukaPraktik(data) {
   const badge  = document.getElementById('p-status-badge');
   const status = data.status_hasil ?? '';
   badge.textContent = status;
-  badge.className   = 'status-badge ' + statusClass(status);
+  badge.className   = 'status-badge inline-block px-[18px] py-[5px] rounded-full text-[0.85rem] font-bold mt-2 ' + statusClass(status);
 
-  // Media grid — gambar/video dari webcam
+  // Media grid
   const grid  = document.getElementById('p-media-grid');
   grid.innerHTML = '';
   const media = data.media ?? [];
 
   if (media.length === 0) {
-    // Placeholder saat belum ada media
-    // icon-foto.png & icon-video.png sebagai placeholder
     grid.innerHTML = `
-      <div class="media-item">
-        <div class="media-placeholder">
-          <img src="${assetUrl('assets/icon-foto.png')}" alt="Foto" class="media-placeholder-icon"
-               onerror="this.style.display='none'">
-          <p>Belum ada foto</p>
+      <div class="rounded-xl overflow-hidden border-[1.5px] border-[#F7DAED] relative">
+        <div class="w-full h-[120px] flex flex-col items-center justify-center gap-2 bg-[linear-gradient(135deg,_#FEF0F8,_#F7DAED)]">
+          <img src="${assetUrl('assets/icon-foto.png')}" alt="Foto"
+               class="w-8 h-8 object-contain opacity-60" onerror="this.style.display='none'">
+          <p class="text-[0.72rem] font-semibold text-[#9B6898]">Belum ada foto</p>
         </div>
       </div>
-      <div class="media-item">
-        <div class="media-placeholder">
-          <img src="${assetUrl('assets/icon-video.png')}" alt="Video" class="media-placeholder-icon"
-               onerror="this.style.display='none'">
-          <p>Belum ada video</p>
+      <div class="rounded-xl overflow-hidden border-[1.5px] border-[#F7DAED] relative">
+        <div class="w-full h-[120px] flex flex-col items-center justify-center gap-2 bg-[linear-gradient(135deg,_#FEF0F8,_#F7DAED)]">
+          <img src="${assetUrl('assets/icon-video.png')}" alt="Video"
+               class="w-8 h-8 object-contain opacity-60" onerror="this.style.display='none'">
+          <p class="text-[0.72rem] font-semibold text-[#9B6898]">Belum ada video</p>
         </div>
       </div>`;
   } else {
     media.forEach(m => {
       const div = document.createElement('div');
-      div.className = 'media-item';
+      div.className = 'rounded-xl overflow-hidden border-[1.5px] border-[#F7DAED] relative';
       if (m.tipe === 'gambar') {
         div.innerHTML = `
-          <img src="/${m.path}" alt="${m.label}"
-               onerror="this.outerHTML='<div class=\\'media-placeholder\\'><img src=\\'${assetUrl('assets/icon-foto.png')}\\' class=\\'media-placeholder-icon\\'><p>${m.label}</p></div>'">
-          <div class="media-label">${m.label}</div>`;
+          <img src="/${m.path}" alt="${m.label}" class="w-full h-[120px] object-cover block bg-[#FEF0F8]"
+               onerror="this.outerHTML='<div class=\\'w-full h-[120px] flex flex-col items-center justify-center gap-2 bg-[linear-gradient(135deg,_#FEF0F8,_#F7DAED)]\\'><img src=\\'${assetUrl('assets/icon-foto.png')}\\' class=\\'w-8 h-8 object-contain opacity-60\\'><p class=\\'text-[0.72rem] font-semibold text-[#9B6898]\\'>${m.label}</p></div>'">
+          <div class="absolute bottom-0 left-0 right-0 bg-[rgba(73,47,72,0.6)] text-white
+                      text-[0.72rem] font-semibold px-2 py-1 text-center">${m.label}</div>`;
       } else {
         div.innerHTML = `
-          <video controls style="width:100%;height:120px;object-fit:cover;background:#FEF0F8;">
+          <video controls class="w-full h-[120px] object-cover bg-[#FEF0F8]">
             <source src="/${m.path}">
           </video>
-          <div class="media-label">${m.label}</div>`;
+          <div class="absolute bottom-0 left-0 right-0 bg-[rgba(73,47,72,0.6)] text-white
+                      text-[0.72rem] font-semibold px-2 py-1 text-center">${m.label}</div>`;
       }
       grid.appendChild(div);
     });
@@ -705,7 +421,6 @@ function bukaKuis(data) {
   document.getElementById('k-kategori').textContent = data.kategori ?? '—';
   document.getElementById('k-level').textContent    = data.level    ?? '—';
 
-  // Render daftar soal
   const list     = document.getElementById('k-soal-list');
   list.innerHTML = '';
   const soalList = data.soal_detail ?? [];
@@ -716,38 +431,58 @@ function bukaKuis(data) {
       ? assetUrl('assets/icon-benar.png')
       : assetUrl('assets/icon-salah.png');
 
+    const headerBg    = s.benar ? 'bg-[#E8F8EE] border-b border-[#B8E8C8]' : 'bg-[#FDECEC] border-b border-[#F0BBBB]';
+    const nomorBg     = s.benar ? 'bg-[#5CB87A]' : 'bg-[#E57373]';
+
     let pilihanHTML = '';
     s.pilihan.forEach(p => {
       const isBenar = p === s.jawaban_benar;
       const isUser  = p === s.jawaban_user;
-      let rowCls    = 'soal-pilihan-row pilihan-netral';
-      if (isBenar)              rowCls = 'soal-pilihan-row pilihan-benar';
-      else if (isUser && !s.benar) rowCls = 'soal-pilihan-row pilihan-salah';
+
+      let rowCls  = 'flex items-center gap-1.5 text-[0.82rem] font-semibold py-1 text-[#9B6898]';
+      let dotCls  = 'w-4 h-4 rounded-full border-[1.5px] border-[#D8A8CE] shrink-0 flex items-center justify-center';
+      let dotInner = '';
+
+      if (isBenar) {
+        rowCls  = 'soal-pilihan-row pilihan-benar flex items-center gap-1.5 text-[0.82rem] font-semibold py-1 text-[#2D8B50]';
+        dotCls  = 'soal-pilihan-dot w-4 h-4 rounded-full shrink-0 flex items-center justify-center bg-[#5CB87A] border-[1.5px] border-[#5CB87A] text-[9px] text-white font-black';
+        dotInner = '✓';
+      } else if (isUser && !s.benar) {
+        rowCls  = 'soal-pilihan-row pilihan-salah flex items-center gap-1.5 text-[0.82rem] font-semibold py-1 text-[#B22020]';
+        dotCls  = 'soal-pilihan-dot w-4 h-4 rounded-full shrink-0 flex items-center justify-center bg-[#E57373] border-[1.5px] border-[#E57373] text-[9px] text-white font-black';
+        dotInner = '✕';
+      } else {
+        rowCls  = 'soal-pilihan-row pilihan-netral flex items-center gap-1.5 text-[0.82rem] font-semibold py-1 text-[#9B6898]';
+        dotCls  = 'soal-pilihan-dot w-4 h-4 rounded-full border-[1.5px] border-[#D8A8CE] shrink-0 flex items-center justify-center';
+      }
+
       const extra = isUser
-        ? (s.benar ? ' (Jawaban kamu)' : ' (Jawaban kamu)')
+        ? ' (Jawaban kamu)'
         : (isBenar && !s.benar ? ' (Jawaban benar)' : '');
-      pilihanHTML += `<div class="${rowCls}"><div class="soal-pilihan-dot"></div>${p}${extra}</div>`;
+
+      pilihanHTML += `<div class="${rowCls}"><div class="${dotCls}">${dotInner}</div>${p}${extra}</div>`;
     });
 
     const card = document.createElement('div');
-    card.className = 'soal-card-detail';
+    card.className = 'rounded-2xl border-[1.5px] border-[#F7DAED] overflow-hidden bg-white';
     card.innerHTML = `
-      <div class="soal-card-header ${cls}">
-        <div class="soal-nomor">${s.nomor}</div>
-        <span class="soal-pertanyaan-txt">${s.soal}</span>
-        <img src="${iconPath}" alt="${cls}" class="soal-status-img"
+      <div class="flex items-center gap-2.5 px-3.5 py-2.5 ${headerBg}">
+        <div class="w-7 h-7 rounded-full flex items-center justify-center text-[0.78rem] font-extrabold shrink-0 text-white ${nomorBg}">${s.nomor}</div>
+        <span class="text-[0.85rem] font-semibold text-[#492F48] flex-1">${s.soal}</span>
+        <img src="${iconPath}" alt="${cls}" class="w-[18px] h-[18px] object-contain shrink-0"
              onerror="this.style.display='none'">
       </div>
-      <div class="soal-card-body">
-        <img src="/${s.img}" alt="Soal ${s.nomor}" class="soal-img-thumb"
-             onerror="this.outerHTML='<div class=\\'soal-img-placeholder-sm\\'><img src=\\'${assetUrl('assets/icon-gesture.png')}\\' class=\\'soal-ph-icon\\'></div>'">
-        <div class="soal-pilihan-wrap">${pilihanHTML}</div>
+      <div class="px-3.5 py-2.5 flex gap-3 items-start">
+        <img src="/${s.img}" alt="Soal ${s.nomor}"
+             class="w-[60px] h-[60px] object-contain rounded-[10px] bg-[#FEF0F8] border-[1.5px] border-[#F7DAED] shrink-0 p-1"
+             onerror="this.outerHTML='<div class=\\'w-[60px] h-[60px] rounded-[10px] bg-[#FEF0F8] border-[1.5px] border-[#F7DAED] flex items-center justify-center shrink-0\\'><img src=\\'${assetUrl('assets/icon-gesture.png')}\\' class=\\'w-8 h-8 object-contain opacity-50\\'></div>'">
+        <div class="flex-1">${pilihanHTML}</div>
       </div>`;
     list.appendChild(card);
   });
 
   if (soalList.length === 0) {
-    list.innerHTML = '<p style="color:#9B6898;font-size:0.88rem;text-align:center;padding:12px;">Data soal tidak tersedia.</p>';
+    list.innerHTML = '<p class="text-[#9B6898] text-[0.88rem] text-center py-3">Data soal tidak tersedia.</p>';
   }
 
   bukaOverlay('modal-kuis');
@@ -757,17 +492,21 @@ function bukaKuis(data) {
 function statusClass(s) {
   if (!s) return '';
   const l = s.toLowerCase();
-  if (l.includes('sangat')) return 'status-sangat-baik';
-  if (l.includes('baik'))   return 'status-baik';
-  if (l.includes('cukup'))  return 'status-cukup';
-  return 'status-perlu';
+  if (l.includes('sangat')) return 'bg-[#E8F8EE] text-[#2D8B50] border-[1.5px] border-[#5CB87A]';
+  if (l.includes('baik'))   return 'bg-[#EEF4FF] text-[#3B5FBF] border-[1.5px] border-[#7B9FE8]';
+  if (l.includes('cukup'))  return 'bg-[#FFF8E6] text-[#8B6020] border-[1.5px] border-[#E8C87A]';
+  return 'bg-[#FDECEC] text-[#B22020] border-[1.5px] border-[#E57373]';
 }
 function bukaOverlay(id) {
-  document.getElementById(id).classList.add('open');
+  const el = document.getElementById(id);
+  el.classList.remove('hidden');
+  el.classList.add('flex');
   document.body.style.overflow = 'hidden';
 }
 function tutupModal(id) {
-  document.getElementById(id).classList.remove('open');
+  const el = document.getElementById(id);
+  el.classList.add('hidden');
+  el.classList.remove('flex');
   document.body.style.overflow = '';
 }
 function tutupOverlay(id, e) {
