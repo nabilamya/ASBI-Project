@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PembelajaranController;
 use App\Http\Controllers\HistoriController;
+use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\AdminAuthController;
 
 
 Route::get('/', function () {
@@ -14,8 +16,9 @@ Route::get('/', function () {
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-Route::post('/register', [AuthController::class, 'register'])->name('register.process');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/beranda', function () {
     return view('beranda');
 })->name('beranda');
@@ -31,9 +34,8 @@ Route::get('/histori', function () {
     return view('histori');
 })->name('histori');
 
-Route::get('/profile', function () {
-    return view('profile');
-})->name('profile');
+
+Route::get('/pembelajaran/{modul}/{huruf}/detail', [PembelajaranController::class, 'showDetail'])->name('pembelajaran.detail');
 
 Route::get('/pembelajaran/sibi', function () {
     return view('pembelajaran.sibi');
@@ -47,9 +49,7 @@ Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
 
-Route::get('/profil', function () {
-    return view('profil');
-})->name('profil.index');
+Route::get('/profil', [ProfilController::class, 'index'])->name('profile');
 
 
 Route::get('/pembelajaran.index', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
@@ -63,4 +63,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/kuis', [AdminController::class, 'kuis'])->name('kuis');
 });
 
+
+Route::get('/admin/login', function () {
+    return view('auth.admin');  // merujuk ke resources/views/auth/admin.blade.php
+})->name('admin.login');
+
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
+
+Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
 Route::get('/histori', [HistoriController::class, 'index'])->name('histori');

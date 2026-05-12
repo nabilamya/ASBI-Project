@@ -14,10 +14,6 @@
         visibility: hidden;
         pointer-events: none;
     }
-
-    input[type="password"] {
-        -webkit-text-security: disc;
-    }
 </style>
 
 <div class="min-h-screen flex items-center justify-center p-4" style="background-color: #FEE6F2;">
@@ -47,16 +43,21 @@
                 Belajar Bahasa Isyarat dengan AI Secara Mandiri
             </p>
 
-            <form id="registerForm" class="space-y-3">
+            {{-- Tampilkan error global --}}
+            @if (session('error'))
+                <div class="bg-red-50 border border-red-200 rounded-xl px-4 py-2 mb-4">
+                    <p class="text-red-500 text-xs text-center">{{ session('error') }}</p>
+                </div>
+            @endif
+
+            <form action="{{ route('register.post') }}" method="POST" class="space-y-3">
                 @csrf
 
                 {{-- Nama Lengkap --}}
                 <div>
                     <label class="block text-xs text-gray-600 mb-1 ml-1">Nama Lengkap</label>
-                    <input type="text" name="nama_lengkap" id="nama_lengkap" value="{{ old('nama_lengkap') }}"
-                        autocomplete="off"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition" />
-                    <p id="errorNama" class="text-red-500 text-xs mt-1 ml-1 hidden">Nama lengkap harus diisi</p>
+                    <input type="text" name="nama_lengkap" value="{{ old('nama_lengkap') }}"
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('nama_lengkap') border-red-400 @enderror" />
                     @error('nama_lengkap')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
@@ -65,10 +66,8 @@
                 {{-- Nama Pengguna --}}
                 <div>
                     <label class="block text-xs text-gray-600 mb-1 ml-1">Nama Pengguna</label>
-                    <input type="text" name="username" id="username" value="{{ old('username') }}"
-                        autocomplete="off"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition" />
-                    <p id="errorUsername" class="text-red-500 text-xs mt-1 ml-1 hidden">Username harus diisi</p>
+                    <input type="text" name="username" value="{{ old('username') }}"
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('username') border-red-400 @enderror" />
                     @error('username')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
@@ -77,10 +76,8 @@
                 {{-- Email --}}
                 <div>
                     <label class="block text-xs text-gray-600 mb-1 ml-1">Email</label>
-                    <input type="email" name="email" id="email" value="{{ old('email') }}"
-                        autocomplete="off"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition" />
-                    <p id="errorEmail" class="text-red-500 text-xs mt-1 ml-1 hidden">Email tidak valid (contoh: nama@domain.com)</p>
+                    <input type="email" name="email" value="{{ old('email') }}"
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('email') border-red-400 @enderror" />
                     @error('email')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
@@ -92,8 +89,7 @@
                         <label class="block text-xs text-gray-600 mb-1 ml-1">Kata Sandi</label>
                         <div class="relative">
                             <input type="password" name="password" id="password"
-                                autocomplete="new-password"
-                                class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition pr-10" />
+                                class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition pr-10 @error('password') border-red-400 @enderror" />
                             <button type="button" id="togglePassword"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
                                 <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -108,7 +104,6 @@
                                 </svg>
                             </button>
                         </div>
-                        <p id="errorPassword" class="text-red-500 text-xs mt-1 ml-1 hidden">Minimal 8 karakter</p>
                         @error('password')
                             <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                         @enderror
@@ -118,7 +113,6 @@
                         <label class="block text-xs text-gray-600 mb-1 ml-1">Konfirmasi Kata Sandi</label>
                         <div class="relative">
                             <input type="password" name="password_confirmation" id="password_confirmation"
-                                autocomplete="new-password"
                                 class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition pr-10" />
                             <button type="button" id="toggleConfirmPassword"
                                 class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none">
@@ -134,16 +128,14 @@
                                 </svg>
                             </button>
                         </div>
-                        <p id="errorConfirm" class="text-red-500 text-xs mt-1 ml-1 hidden">Kata sandi tidak cocok</p>
                     </div>
                 </div>
 
                 {{-- Nomor Telepon --}}
                 <div>
-                    <label class="block text-xs text-gray-600 mb-1 ml-1">Nomor Telepon</label>
-                    <input type="tel" name="nomor_telepon" id="nomor_telepon" value="{{ old('nomor_telepon') }}"
-                        autocomplete="off"
-                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition" />
+                    <label class="block text-xs text-gray-600 mb-1 ml-1">Nomor Telepon (Opsional)</label>
+                    <input type="tel" name="nomor_telepon" value="{{ old('nomor_telepon') }}"
+                        class="w-full border border-gray-200 rounded-xl px-4 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-pink-300 transition @error('nomor_telepon') border-red-400 @enderror" />
                     @error('nomor_telepon')
                         <p class="text-red-500 text-xs mt-1 ml-1">{{ $message }}</p>
                     @enderror
@@ -166,9 +158,7 @@
 
 @push('scripts')
 <script>
-    // ==================== TOGGLE PASSWORD ====================
-
-    // Toggle Kata Sandi
+    // Toggle Password
     const togglePassword = document.getElementById('togglePassword');
     const passwordInput = document.getElementById('password');
     const eyeIcon = document.getElementById('eyeIcon');
@@ -183,7 +173,7 @@
         });
     }
 
-    // Toggle Konfirmasi Kata Sandi
+    // Toggle Confirm Password
     const toggleConfirm = document.getElementById('toggleConfirmPassword');
     const confirmInput = document.getElementById('password_confirmation');
     const eyeIconConfirm = document.getElementById('eyeIconConfirm');
@@ -195,157 +185,6 @@
             confirmInput.type = isHidden ? 'text' : 'password';
             eyeIconConfirm.classList.toggle('hidden', isHidden);
             eyeOffIconConfirm.classList.toggle('hidden', !isHidden);
-        });
-    }
-
-    // ==================== ELEMEN ====================
-    const namaLengkap = document.getElementById('nama_lengkap');
-    const username = document.getElementById('username');
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const confirmPassword = document.getElementById('password_confirmation');
-    const nomorTelepon = document.getElementById('nomor_telepon');
-
-    const errorNama = document.getElementById('errorNama');
-    const errorUsername = document.getElementById('errorUsername');
-    const errorEmail = document.getElementById('errorEmail');
-    const errorPassword = document.getElementById('errorPassword');
-    const errorConfirm = document.getElementById('errorConfirm');
-
-    // ==================== VALIDASI EMAIL ====================
-    function isValidEmail(emailValue) {
-        return /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(emailValue);
-    }
-
-    if (email) {
-        email.addEventListener('input', function () {
-            if (this.value.length > 0 && !isValidEmail(this.value)) {
-                errorEmail.classList.remove('hidden');
-                this.classList.add('border-red-400');
-            } else {
-                errorEmail.classList.add('hidden');
-                this.classList.remove('border-red-400');
-            }
-        });
-    }
-
-    // ==================== VALIDASI PASSWORD ====================
-    if (password) {
-        password.addEventListener('input', function () {
-            if (this.value.length > 0 && this.value.length < 8) {
-                errorPassword.classList.remove('hidden');
-                this.classList.add('border-red-400');
-            } else {
-                errorPassword.classList.add('hidden');
-                this.classList.remove('border-red-400');
-            }
-            if (confirmPassword.value.length > 0) {
-                checkConfirm();
-            }
-        });
-    }
-
-    // ==================== VALIDASI KONFIRMASI PASSWORD ====================
-    function checkConfirm() {
-        if (confirmPassword.value !== password.value) {
-            errorConfirm.classList.remove('hidden');
-            confirmPassword.classList.add('border-red-400');
-        } else {
-            errorConfirm.classList.add('hidden');
-            confirmPassword.classList.remove('border-red-400');
-        }
-    }
-
-    if (confirmPassword) {
-        confirmPassword.addEventListener('input', checkConfirm);
-    }
-
-    // ==================== VALIDASI NAMA & USERNAME ====================
-    if (namaLengkap) {
-        namaLengkap.addEventListener('input', function () {
-            if (this.value.trim() === '') {
-                errorNama.classList.remove('hidden');
-                this.classList.add('border-red-400');
-            } else {
-                errorNama.classList.add('hidden');
-                this.classList.remove('border-red-400');
-            }
-        });
-    }
-
-    if (username) {
-        username.addEventListener('input', function () {
-            if (this.value.trim() === '') {
-                errorUsername.classList.remove('hidden');
-                this.classList.add('border-red-400');
-            } else {
-                errorUsername.classList.add('hidden');
-                this.classList.remove('border-red-400');
-            }
-        });
-    }
-
-    // ==================== SUBMIT FORM (REDIRECT KE LOGIN) ====================
-    const form = document.getElementById('registerForm');
-
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Hentikan submit ke server
-
-            let valid = true;
-
-            // Validasi Nama Lengkap
-            if (!namaLengkap.value.trim()) {
-                errorNama.classList.remove('hidden');
-                namaLengkap.classList.add('border-red-400');
-                valid = false;
-            }
-
-            // Validasi Username
-            if (!username.value.trim()) {
-                errorUsername.classList.remove('hidden');
-                username.classList.add('border-red-400');
-                valid = false;
-            }
-
-            // Validasi Email
-            if (!isValidEmail(email.value)) {
-                errorEmail.classList.remove('hidden');
-                email.classList.add('border-red-400');
-                valid = false;
-            }
-
-            // Validasi Password
-            if (password.value.length < 8) {
-                errorPassword.classList.remove('hidden');
-                password.classList.add('border-red-400');
-                valid = false;
-            }
-
-            // Validasi Konfirmasi Password
-            if (confirmPassword.value !== password.value) {
-                errorConfirm.classList.remove('hidden');
-                confirmPassword.classList.add('border-red-400');
-                valid = false;
-            }
-
-            // Jika semua valid, redirect ke halaman login
-            if (valid) {
-                // Simpan data ke localStorage (opsional)
-                const userData = {
-                    nama_lengkap: namaLengkap.value,
-                    username: username.value,
-                    email: email.value,
-                    nomor_telepon: nomorTelepon ? nomorTelepon.value : ''
-                };
-                localStorage.setItem('userRegistered', JSON.stringify(userData));
-
-                // Tampilkan pesan sukses di localStorage untuk ditampilkan di halaman login
-                localStorage.setItem('registerSuccess', 'Registrasi berhasil! Silakan masuk.');
-
-                // Redirect ke halaman login
-                window.location.href = '/login';
-            }
         });
     }
 </script>

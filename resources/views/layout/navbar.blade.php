@@ -123,6 +123,47 @@
     .nav-hamburger { display: flex; }
     .nav-mobile-menu.open { display: flex; }
   }
+  .profile-dropdown {
+  position: relative;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 58px;
+  right: 0;
+  width: 180px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  border: 1px solid #f3d0e3;
+  padding: 8px;
+  display: none;
+  flex-direction: column;
+  z-index: 999;
+}
+
+.profile-menu.show {
+  display: flex;
+}
+
+.profile-menu a,
+.profile-menu button {
+  padding: 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  color: #492F48;
+  border-radius: 10px;
+}
+
+.profile-menu a:hover,
+.profile-menu button:hover {
+  background: #FEE6F2;
+  color: #C82D85;
+}
 </style>
 @endpush
 
@@ -153,12 +194,23 @@
   </nav>
 
   <!-- Desktop Profile Button -->
-  <a href="{{ route('profile') }}" class="btn-profile">
+<div class="profile-dropdown">
+  <button class="btn-profile" onclick="toggleProfileMenu(event)">
     <div class="avatar">
       {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
     </div>
     {{ auth()->user()->name ?? 'User' }}
-  </a>
+  </button>
+
+  <div class="profile-menu" id="profileMenu">
+    <a href="{{ route('profile') }}">Profile</a>
+
+    <form action="{{ route('logout') }}" method="POST">
+      @csrf
+      <button type="submit">Keluar</button>
+    </form>
+  </div>
+</div>
 
   <!-- Hamburger (Mobile) -->
   <div class="nav-hamburger" onclick="toggleMobileNav()" id="nav-hamburger">
@@ -198,6 +250,15 @@
 
 @push('scripts')
 <script>
+  function toggleProfileMenu(event) {
+    event.stopPropagation();
+    document.getElementById('profileMenu').classList.toggle('show');
+  }
+
+  document.addEventListener('click', function () {
+    const menu = document.getElementById('profileMenu');
+    if (menu) menu.classList.remove('show');
+  });
   function toggleMobileNav() {
     const menu = document.getElementById('nav-mobile-menu');
     menu.classList.toggle('open');

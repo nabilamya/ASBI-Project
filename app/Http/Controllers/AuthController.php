@@ -37,39 +37,60 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
 
-        if (Auth::attempt($credentials, $request->remember)) {
-            return redirect()->route('pembelajaran.index')->with('success', 'Selamat datang kembali!');
+        if (Auth::attempt($credentials, $request->has('remember'))) {
+            $request->session()->regenerate();
+            return redirect()->intended(route('beranda'))->with('success', 'Selamat datang kembali!');
         }
 
         return back()->withErrors([
             'login' => 'Email/Username atau password salah.',
-        ])->withInput();
+        ])->onlyInput('login');
     }
 
-    // PROSES REGISTER (LANGSUNG REDIRECT KE LOGIN)
+    // PROSES REGISTER
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_lengkap' => 'required|string|max:255',
-            'username'     => 'required|string|max:255|unique:users,username',
-            'email'        => 'required|email|unique:users,email',
-            'password'     => 'required|min:8|confirmed',
-            'nomor_telepon'=> 'nullable|string|max:15',
+            'nama_lengkap'  => 'required|string|max:255',
+            'username'      => 'required|string|max:255|unique:users,username',
+            'email'         => 'required|email|unique:users,email',
+            'password'      => 'required|min:8|confirmed',
+            'nomor_telepon' => 'nullable|string|max:15',
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        User::create([
-            'nama_lengkap'   => $request->nama_lengkap,
-            'username'       => $request->username,
-            'email'          => $request->email,
-            'password'       => Hash::make($request->password),
-            'nomor_telepon'  => $request->nomor_telepon,
-        ]);
+        try {
+            $user = User::create([
+                'name'     => $request->nama_lengkap,
+                'username' => $request->username,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+                'phone'    => $request->nomor_telepon,
+            ]);
 
-        // 👇 INI YANG PENTING: REDIRECT KE HALAMAN LOGIN
-        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silakan masuk.');
+            // Optional: Auto login setelah register
+            // Auth::login($user);
+            // return redirect()->route('pembelajaran.index')->with('success', 'Registrasi berhasil! Selamat belajar!');
+
+            // Redirect ke login
+            return redirect()->route('login')
+                ->with('success', 'Registrasi berhasil! Silakan masuk dengan akun Anda.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+        }
+    }
+
+    // PROSES LOGOUT
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('success', 'Anda berhasil logout.');
     }
 }

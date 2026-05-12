@@ -87,34 +87,35 @@
     </div>
 </div>
 
-{{-- ===== MODAL POPUP (Sebelum masuk halaman detail) ===== --}}
-<div id="letterModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50" style="display: none;">
-    <div class="bg-white rounded-2xl max-w-sm w-full mx-4 p-6 shadow-xl transform transition-all">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="text-2xl font-bold text-gray-800">Belajar Huruf <span id="modalLetter" class="text-pink-500">A</span></h3>
-            <button id="closeModalBtn" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+<div id="letterModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-[9999] transition-all duration-300" style="display: none;">
+    <div class="bg-white rounded-3xl max-w-md w-full mx-6 p-6 shadow-2xl transform transition-all relative my-8">
+        <button id="closeModalBtn" class="absolute top-4 right-5 text-gray-400 hover:text-gray-600 text-3xl leading-none z-10">&times;</button>
+        <div class="text-center mb-2">
+            <h3 class="text-2xl font-extrabold text-gray-800">
+                Belajar Huruf <span id="modalLetter" class="text-pink-500">A</span>
+            </h3>
         </div>
-        <div class="text-center py-4">
-            <div class="text-8xl font-bold text-pink-500 mb-3" id="modalLetterBig">A</div>
-            <div class="w-32 h-32 bg-pink-50 rounded-2xl flex items-center justify-center mx-auto border-2 border-pink-100">
-                <span class="text-5xl">🤟</span>
+        <div class="flex justify-center my-5">
+            <div class="bg-[#FEF2F8] rounded-2xl p-6 border border-pink-100 w-full flex flex-col items-center">
+                <div class="text-7xl font-black text-pink-400 mb-2" id="modalLetterBig">A</div>
+                <p class="text-gray-500 text-sm mt-4 text-center" id="modalDescription">
+                    Pelajari bahasa isyarat untuk huruf <span id="modalLetterDesc">A</span> dalam modul <span id="modalModuleDesc">BISINDO</span>
+                </p>
             </div>
-            <p class="text-gray-500 text-sm mt-4" id="modalDescription">Pelajari bahasa isyarat untuk huruf A dalam modul BISINDO</p>
         </div>
-        <div class="flex gap-3 mt-4">
-            <button id="practiceNowBtn" class="flex-1 py-2.5 rounded-xl font-semibold bg-pink-500 text-white hover:bg-pink-600 transition">
-                🎥 Praktik
+        <div class="flex flex-col gap-3 mt-2">
+            <button id="viewModuleBtn" class="w-full py-3 rounded-xl font-bold text-pink-600 bg-pink-50 border border-pink-200 hover:bg-pink-100 transition flex items-center justify-center gap-2">
+                <span></span> Lihat Modul
             </button>
-            <button id="markMasteredModalBtn" class="flex-1 py-2.5 rounded-xl font-semibold border-2 border-green-400 text-green-600 bg-green-50 hover:bg-green-100 transition">
-                ✔️ Sudah Dikuasai
+            <button id="practiceNowBtn" class="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 transition shadow-md flex items-center justify-center gap-2">
+                <span></span> Praktik Langsung
             </button>
-            <button id="closeModalBtn2" class="flex-1 py-2.5 rounded-xl font-semibold border border-pink-300 text-pink-500 hover:bg-pink-50 transition">
-                Tutup
+            <button id="markMasteredModalBtn" class="w-full py-3 rounded-xl font-bold border-2 transition flex items-center justify-center gap-2 border-green-400 text-green-700 bg-green-50 hover:bg-green-100">
+                <span></span> Sudah Dikuasai
             </button>
         </div>
     </div>
 </div>
-
 @push('scripts')
 <script>
     const allLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
@@ -180,13 +181,13 @@
         // Update tombol "Sudah Dikuasai" di modal
         const markBtn = document.getElementById('markMasteredModalBtn');
         if (isMastered) {
-            markBtn.innerHTML = '✓ Sudah Dikuasai';
+            markBtn.innerHTML = ' Sudah Dikuasai';
             markBtn.classList.add('bg-green-100', 'text-green-600', 'border-green-400');
             markBtn.disabled = true;
             markBtn.style.opacity = '0.6';
             markBtn.style.cursor = 'not-allowed';
         } else {
-            markBtn.innerHTML = '✔️ Sudah Dikuasai';
+            markBtn.innerHTML = ' Sudah Dikuasai';
             markBtn.classList.remove('bg-green-100', 'text-green-600', 'border-green-400');
             markBtn.disabled = false;
             markBtn.style.opacity = '1';
@@ -201,6 +202,11 @@
         document.getElementById('letterModal').style.display = 'none';
         selectedLetter = null;
     }
+    document.getElementById('viewModuleBtn').onclick = function() {
+    if (selectedLetter) {
+        window.location.href = `/pembelajaran/${currentModule.toLowerCase()}/${selectedLetter.toLowerCase()}/detail`;
+    }
+};
 
     // Tandai huruf sebagai dikuasai (dari modal)
     function markMasteredFromModal() {
@@ -209,10 +215,10 @@
         if (!masteredLetters.includes(selectedLetter)) {
             masteredLetters.push(selectedLetter);
             saveMastered();
-            showToast(`🎉 Huruf ${selectedLetter} berhasil dikuasai! 🎉`);
+            showToast(`🎉 Huruf ${selectedLetter} berhasil dikuasai! `);
             closeModal();
         } else {
-            showToast(`Huruf ${selectedLetter} sudah kamu kuasai sebelumnya! 👍`, 'info');
+            showToast(`Huruf ${selectedLetter} sudah kamu kuasai sebelumnya! `, 'info');
             closeModal();
         }
     }
@@ -274,7 +280,6 @@
 
     // Event binding modal
     document.getElementById('closeModalBtn').onclick = closeModal;
-    document.getElementById('closeModalBtn2').onclick = closeModal;
     document.getElementById('markMasteredModalBtn').onclick = markMasteredFromModal;
     document.getElementById('practiceNowBtn').onclick = goToPractice;
 

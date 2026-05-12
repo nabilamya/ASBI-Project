@@ -18,4 +18,11 @@ class PembelajaranController extends Controller
             'huruf' => strtolower($huruf)
         ]);
     }
+    public function showDetail($modul, $huruf)
+{
+    return view('detail', [
+        'modul' => strtolower($modul),
+        'huruf' => strtolower($huruf)
+    ]);
+}
 }
